@@ -1,159 +1,137 @@
+# Python 字典（dict）
 
-## Python 词典类型的介绍[](https://www.pythontutorial.net/python-basics/python-dictionary/#introduction-to-the-python-dictionary-type "Anchor for Introduction to the Python Dictionary type")
+> 文件名保留原来的“词典”，正文统一使用 Python 社区更常见的中文术语：**字典**。
 
-Python 词典是一组键值对，每个键对应一个值。
-
-键值对中的值可以是[数字](https://www.pythontutorial.net/python-basics/python-numbers/)、[字符串](https://www.pythontutorial.net/python-basics/python-string/)、[列表](https://www.pythontutorial.net/python-basics/python-list/)、[元组](https://www.pythontutorial.net/python-basics/python-tuples/)，甚至是另一个词典。事实上，你可以在 Python 中使用任何有效类型的值作为键值对的值。
-
-键值对中的键必须是不可变的。换句话说，密钥不能更改，例如数字、字符串、元组等。
-
-### 1）使用方括号符号[](https://www.pythontutorial.net/python-basics/python-dictionary/#1-using-square-bracket-notation "Anchor for 1) Using square bracket notation")
-
-要访问与键关联的值，请将键放入方括号内：
-
-```python
-dict[key]
-```
-
-### 2）使用 get（） 方法[#](https://www.pythontutorial.net/python-basics/python-dictionary/#2-using-the-get-method "Anchor for 2) Using the get() method")
-## 添加新的键值对[](https://www.pythontutorial.net/python-basics/python-dictionary/#adding-new-key-value-pairs "Anchor for Adding new key-value pairs")
-如果密钥不存在，方法返回而不是抛出 。注意，这意味着没有值存在。`get()``None``KeyError``None`
-
-当密钥不存在时，方法还会通过将默认值传递给第二个参数来返回默认值。`get()`
-
-如果键不存在于字典中，以下示例返回该字符串：`'000-00-0000'``ssn``person`
+字典用 **键（key）→ 值（value）** 保存数据。
 
 ```python
 person = {
-    'first_name': 'John',
-    'last_name': 'Doe',
-    'age': 25,
-    'favorite_colors': ['blue', 'green'],
-    'active': True
+    "name": "Tom",
+    "age": 18,
+    "active": True
 }
-
-ssn = person.get('ssn', '000-00-0000')
-print(ssn)
 ```
 
-[试试看吧](https://www.pythontutorial.net/playground/?q=cGVyc29uID0gewogICAgJ2ZpcnN0X25hbWUnOiAnSm9obicsCiAgICAnbGFzdF9uYW1lJzogJ0RvZScsCiAgICAnYWdlJzogMjUsCiAgICAnZmF2b3JpdGVfY29sb3JzJzogWydibHVlJywgJ2dyZWVuJ10sCiAgICAnYWN0aXZlJzogVHJ1ZQp9Cgpzc24gPSBwZXJzb24uZ2V0KCdzc24nLCAnMDAwLTAwLTAwMDAnKQpwcmludChzc24p)
+## 1. 读取值
 
-输出：
+### 方括号
 
 ```python
-000-00-0000
+print(person["name"])
 ```
 
-由于词典具有动态结构，你可以随时添加新的键值对。
+如果键不存在，会抛出 `KeyError`。
 
-要向词典添加新的键值对，你需要在方括号内指定词典名称，后面跟着新键和新值。
-
-以下示例为词典添加了一个新的键值对：`person`
+### get()
 
 ```python
-person['gender'] = 'Famale'
+print(person.get("name"))
+print(person.get("city"))
+print(person.get("city", "unknown"))
 ```
 
-## 修改键值对中的值[](https://www.pythontutorial.net/python-basics/python-dictionary/#modifying-values-in-a-key-value-pair "Anchor for Modifying values in a key-value pair")
+`get()` 在键不存在时默认返回 `None`，也可以提供默认值。
 
-要修改与键关联的值，你需要用方括号指定字典名称（键）并指定与键关联的新值：
+## 2. 新增和修改
+
+字典使用同一种写法新增或修改：
 
 ```python
-dict[key] = new_value
+person["city"] = "Beijing"  # 新增
+person["age"] = 19           # 修改
 ```
 
-## 移除键值对[](https://www.pythontutorial.net/python-basics/python-dictionary/#removing-key-value-pairs "Anchor for Removing key-value pairs")
-
-要通过键去除键值对，使用以下语句：`del`
+## 3. 删除
 
 ```python
-del dict[key]
-```
-## 在词典中循环[](https://www.pythontutorial.net/python-basics/python-dictionary/#looping-through-a-dictionary "Anchor for Looping through a dictionary")
-
-要检查字典，可以用循环遍历其键值对、键或值。`for`
-
-注意，自从 Python 3.7 起，当你循环字典时，键值对会按插入顺序出现。
-
-### 循环词典中所有键值对[](https://www.pythontutorial.net/python-basics/python-dictionary/#looping-all-key-value-pairs-in-a-dictionary "Anchor for Looping all key-value pairs in a dictionary")
-
-Python 词典提供了一个方法，它返回一个对象，该对象包含列表中的键值对的元组列表。`items()`
-
-例如：
-
-```python
-person = {
-    'first_name': 'John',
-    'last_name': 'Doe',
-    'age': 25,
-    'favorite_colors': ['blue', 'green'],
-    'active': True
-}
-
-print(person.items())
+del person["active"]
 ```
 
-输出：
+如果需要更灵活的删除，后面还会遇到 `pop()`。
+
+## 4. 成员判断
 
 ```python
-dict_items([('first_name', 'John'), ('last_name', 'Doe'), ('age', 25), ('favorite_colors', ['blue', 'green']), ('active', True)])
+"name" in person
 ```
-要遍历字典中所有键值对，使用一个双变量循环，解[压列表中的每个元组](https://www.pythontutorial.net/python-basics/python-unpack-list/)：`for``key``value`
+
+注意：对字典使用 `in`，默认判断的是 **键** 是否存在。
+
+## 5. 遍历字典
+
+### 遍历键
 
 ```python
-person = {
-    'first_name': 'John',
-    'last_name': 'Doe',
-    'age': 25,
-    'favorite_colors': ['blue', 'green'],
-    'active': True
-}
-
-for key, value in person.items():
-    print(f"{key}: {value}")
+for key in person:
+    print(key)
 ```
-### 在字典中循环所有键[](https://www.pythontutorial.net/python-basics/python-dictionary/#looping-through-all-the-keys-in-a-dictionary "Anchor for Looping through all the keys in a dictionary")
 
-有时候，你只是想循环字典里的所有按键。在这种情况下，你可以用循环配合方法。`for``keys()`
-
-该方法返回一个包含字典中密钥列表的对象。`keys()`
-
-例如：
+也可以显式写：
 
 ```python
-person = {
-    'first_name': 'John',
-    'last_name': 'Doe',
-    'age': 25,
-    'favorite_colors': ['blue', 'green'],
-    'active': True
-}
-
 for key in person.keys():
     print(key)
 ```
-### 循环解析词典中的所有值[](https://www.pythontutorial.net/python-basics/python-dictionary/#looping-through-all-the-values-in-a-dictionary "Anchor for Looping through all the values in a dictionary")
 
-该方法返回一个没有键的值列表。`values()`
-
-要循环词典中的所有值，使用一个 for 循环，方法如下：`values()`
+### 遍历值
 
 ```python
-person = {
-    'first_name': 'John',
-    'last_name': 'Doe',
-    'age': 25,
-    'favorite_colors': ['blue', 'green'],
-    'active': True
-}
-
 for value in person.values():
     print(value)
 ```
 
-## 摘要[](https://www.pythontutorial.net/python-basics/python-dictionary/#summary "Anchor for Summary")
+### 同时遍历键和值
 
-- Python 词典是一组键值对，每个键都有对应的值。
-- 使用方括号或方法通过按键访问某个值。`get()`
-- 使用该语句从字典中移除键的键值对。`del`
-- 使用循环来遍历字典中的键、值和键值对。`for`
+```python
+for key, value in person.items():
+    print(key, value)
+```
+
+`items()` 提供的是 `(key, value)` 形式的数据，所以这里复用了之前学过的 [[Python 中解包列表|序列解包]]。
+
+## 6. 键和值的限制
+
+- 值可以是几乎任意 Python 对象。
+- 键必须是可哈希（hashable）的对象，例如字符串、数字、部分元组。
+- 列表和字典本身通常不能直接作为键。
+
+初学阶段先记：**最常见的键就是字符串。**
+
+## 7. 插入顺序
+
+现代 Python 中，字典会保留键值对的插入顺序。但字典的核心用途仍然是“通过键找值”，不要把它当作依赖数字下标访问的列表。
+
+## 8. 一道小例子
+
+```python
+scores = {
+    "Tom": 78,
+    "Alice": 95,
+    "Bob": 88
+}
+
+for name, score in scores.items():
+    if score >= 80:
+        print(name, score)
+```
+
+## 易错点
+
+- “dictionary” 翻译成 **字典**，不是“词典”。
+- “key” 翻译成 **键**，不是“密钥”。
+- `person["x"]` 和 `person.get("x")` 在键不存在时行为不同。
+- `for x in person` 中的 `x` 是键。
+
+## 自查
+
+不用运行代码，回答：
+
+```python
+user = {"name": "Kong", "age": 23}
+```
+
+1. 怎么安全读取不存在的 `email` 并给默认值 `"none"`？
+2. 怎么把 `age` 改成 24？
+3. 怎么同时遍历名字和年龄？
+
+关联：[[00 Day04整理版]]、[[Python 词典理解]]
