@@ -81,8 +81,6 @@ new_tags = {tag.lower() for tag in tags if tag != 'Numpy'}
 print(new_tags)
 ```
 
-[试试看吧](https://www.pythontutorial.net/playground/?q=dGFncyA9IHsnRGphbmdvJywgJ1BhbmRhcycsICdOdW1weSd9Cm5ld190YWdzID0ge3RhZy5sb3dlcigpIGZvciB0YWcgaW4gdGFncyBpZiB0YWcgIT0gJ051bXB5J30KCnByaW50KG5ld190YWdzKQ%3D%3D)
-
 输出：
 
 ```python
