@@ -1,0 +1,22 @@
+# Local Obsidian state and trash
+.obsidian/
+.trash/
+
+# Local backups
+*.zip
+*.bak
+
+# Credentials and local environment
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# OS and editor temporary files
+Thumbs.db
+.DS_Store
+~$*
+*.tmp
