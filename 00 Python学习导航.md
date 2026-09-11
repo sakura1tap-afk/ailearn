@@ -5,90 +5,152 @@ tags:
 
 # Python 学习导航
 
-保留 week/day 作为**学习日期记录**，用下面的顺序作为**复习路线**。序号表示建议阅读顺序，不表示每一篇都是下一篇的必备前置；每篇顶部另有“前置知识”。
+这个仓库保留 `week/day` 作为学习时间线，同时提供一条更适合复习的知识路线。
 
-从 [[01 Python知识图谱]] 看知识依赖；从 [[02 易混概念与练习复盘]] 找容易出错的地方。整理范围与校正依据见 [[99 本次整理说明]]。
+当前进度：**Week01 / Day04**。已经从基础语法进入到 **函数、列表处理、迭代器、字典与集合**。
 
-> [!tip] 每次怎么学
-> 先看本篇重点 → 不熟的前置知识点回去看 → 阅读原笔记、运行示例 → 回答页末自查 → 顺着下一篇继续。
-> 基础已经熟悉时，可以直接从薄弱知识点进入，不必每次从头复习。
+优先入口：
+- [[01 Python知识图谱]]：看知识之间怎么连接。
+- [[02 易混概念与练习复盘]]：看当前最容易犯的错误。
+- [[week01/day03/00 Day03整理版|Day03 整理版]]：复习列表处理、迭代、排序、map/filter/reduce。
+- [[week01/day04/00 Day04整理版|Day04 整理版]]：复习字典、集合、集合运算与循环 else。
 
-## 建议复习顺序
+> [!tip] 建议学习方式
+> 原始笔记用于保留学习过程；整理版用于复习。新知识先手写普通版本，再学习更简洁的 Python 写法。看懂不算掌握，关闭笔记后能自己写出来才算。
 
+## 1. 基础语法｜Day01
 
-### 基础
+- [[python基础|Python 基础语法]]
+- [[python注释|Python 注释]]
+- [[python变量|Python 变量]]
+- [[python常量|Python 常量约定]]
+- [[python数字|Python 数字]]
+- [[python算术|Python 算术运算符]]
+- [[python赋值操作符|Python 复合赋值运算符]]
+- [[python字符串|Python 字符串]]
+- [[python布尔|Python 布尔值与真值判断]]
+- [[类型转换|Python 类型转换]]
+- [[python比较|Python 比较运算符]]
+- [[Python 逻辑运算符|Python 逻辑运算符]]
 
-- **01** · [[python基础|Python 基础语法]] · `day01`
-- **02** · [[python注释|Python 注释]] · `day01`
-- **03** · [[python变量|Python 变量]] · `day01`
-- **04** · [[python常量|Python 常量约定]] · `day01`
-- **05** · [[python数字|Python 数字]] · `day01`
-- **06** · [[python算术|Python 算术运算符]] · `day01`
-- **07** · [[python赋值操作符|Python 复合赋值运算符]] · `day01`
-- **08** · [[python字符串|Python 字符串]] · `day01`
-- **09** · [[python布尔|Python 布尔值与真值判断]] · `day01`
-- **10** · [[类型转换|Python 类型转换]] · `day01`
-- **11** · [[python比较|Python 比较运算符]] · `day01`
-- **12** · [[Python 逻辑运算符|Python 逻辑运算符]] · `day01`
+## 2. 流程控制与函数｜Day02
 
-### 流程控制
+### 条件与循环
 
-- **13** · [[python if语句|Python if 条件分支]] · `day02`
-- **14** · [[Python三进制算符|Python 三元表达式（条件表达式）]] · `day02`
-- **15** · [[Python范围循环|Python for 与 range]] · `day02`
-- **16** · [[Python while|Python while 循环]] · `day02`
-- **17** · [[Python break|Python break]] · `day02`
-- **18** · [[Python continue|Python continue]] · `day02`
-- **19** · [[Python pass|Python pass]] · `day02`
+- [[python if语句|Python if 条件分支]]
+- [[Python三进制算符|Python 三元表达式（条件表达式）]]
+- [[Python范围循环|Python for 与 range]]
+- [[Python while|Python while 循环]]
+- [[Python break|Python break]]
+- [[Python continue|Python continue]]
+- [[Python pass|Python pass]]
 
 ### 函数
 
-- **20** · [[Python 函数|Python 函数]] · `day02`
-- **21** · [[Python 默认参数|Python 默认参数]] · `day02`
-- **22** · [[Python 关键词参数|Python 关键字参数]] · `day02`
-- **23** · [[Python 函数文档字符串|Python 函数文档字符串]] · `day02`
+- [[Python 函数|Python 函数]]
+- [[Python 默认参数|Python 默认参数]]
+- [[Python 关键词参数|Python 关键字参数]]
+- [[Python 函数文档字符串|Python 函数文档字符串]]
+- [[Python Lambda表达式|Python lambda 表达式]]
+- [[Python 递归函数|Python 递归函数]]
 
-### 序列
+### 列表
 
-- **24** · [[Python 列表|Python 列表]] · `day02`
-- **25** · [[Python元组|Python 元组]] · `day03`
-- **26** · [[Python 中解包列表|Python 序列解包]] · `day03`
-- **27** · [[Python 列表切片|Python 列表切片]] · `day03`
-- **28** · [[For 循环|Python for 遍历列表与 enumerate]] · `day03`
-- **29** · [[查找列表中元素的索引|Python 列表查找与成员判断]] · `day03`
-- **30** · [[Python 迭代|Python 可迭代对象与迭代器]] · `day03`
+- [[Python 列表|Python 列表]]
+- [[week01/day02/今日练习|Day02 手写练习]]
 
-### 函数应用
+Day02 手写重点包括：列表求和、筛选偶数、查找目标、去重、冒泡排序与第二大元素。
 
-- **31** · [[Python Lambda表达式|Python lambda 表达式]] · `day02`
-- **32** · [[Python 排序列表|Python list.sort 原地排序]] · `day03`
-- **33** · [[Python sorted|Python sorted 返回新列表]] · `day03`
-- **34** · [[Python map（） 函数转换列表元素|Python map 转换元素]] · `day03`
-- **35** · [[Python中筛选列表元素|Python filter 筛选元素]] · `day03`
-- **36** · [[Python的reduce（） 函数将列表简化为单一值|Python reduce 累积归约]] · `day03`
-- **37** · [[Python 递归函数|Python 递归函数]] · `day02`
+## 3. 序列、迭代与数据处理｜Day03
 
-### 练习
+先看：[[week01/day03/00 Day03整理版|Day03 整理版]]
 
-- **38** · [[今日练习|Day02 今日练习与错题复盘]] · `day02`
+### 序列结构
 
-> [!note] 几处跨日期的安排
-> 列表知识和 day03 的 for 遍历要放在列表练习之前；lambda 的循环示例也依赖列表和遍历，所以放到后面。递归作为函数的分支专题，可以稍后复习；练习本身不依赖递归。
+- [[Python元组|Python 元组]]
+- [[Python 中解包列表|Python 序列解包]]
+- [[Python 列表切片|Python 列表切片]]
+- [[Python 列表解析|Python 列表推导式]]
 
-## 按原来的日期回顾
+### 遍历与查找
 
-| 原目录 | 内容 | 复习时注意 |
-| --- | --- | --- |
-| week01/day01 | 语法、变量、数值、字符串、布尔、运算与转换 | 先搞清楚“值是什么类型”，再看条件判断 |
-| week01/day02 | 分支、循环、函数、列表、练习 | 练习会用到 day03 的遍历、查找和排序 |
-| week01/day03 | 元组、解包、切片、遍历、迭代器、排序与数据处理 | 先理解普通 for，再看 map/filter/reduce |
+- [[For 循环|Python for 遍历列表与 enumerate]]
+- [[Python 迭代|Python 可迭代对象与迭代器]]
+- [[查找列表中元素的索引|Python 列表查找与成员判断]]
 
-## 后续知识链（建议，尚未算作已学）
+### 排序 / 转换 / 筛选 / 归约
 
-现有列表知识 → 列表推导式 → 字典与集合 → 模块与导入 → 异常处理 → 文件与 JSON → 虚拟环境和包管理 → NumPy 数组 → Pandas 数据整理 → 机器学习入门。
+- [[Python 排序列表|Python list.sort 原地排序]]
+- [[Python sorted|Python sorted 返回新列表]]
+- [[Python map（） 函数转换列表元素|Python map 转换元素]]
+- [[Python中筛选列表元素|Python filter 筛选元素]]
+- [[Python的reduce（） 函数将列表简化为单一值|Python reduce 累积归约]]
+- [[week01/day03/今日练习|Day03 手写练习]]
 
-这是一条面向 AI 数据处理的建议路线，可以随着你的学习目标调整。整理时出现了一个空白的 [[Python 列表解析]] 页面，可作为“列表推导式（list comprehension）”的记录入口；暂未改动它的正文。
+Day03 已经实际练到：切片、多列表返回、列表推导式、`filter()`、`sorted(key=lambda...)`、LeetCode 283 移动零。
 
-## 以后新增笔记
+## 4. 字典、集合与循环 else｜Day04
 
-继续放在对应 week/day 下即可。每篇补一句重点、1–3 个前置知识链接和一个自查问题，再把新笔记接到本页合适的位置。只有已经有内容的笔记才加入正式复习路线。
+先看：[[week01/day04/00 Day04整理版|Day04 整理版]]
+
+### 字典
+
+- [[Python 词典|Python 字典]]
+- [[Python 词典理解|Python 字典推导式]]
+
+### 集合
+
+- [[Python 集合|Python 集合]]
+- [[Python 集合理解|Python 集合推导式]]
+- [[Python集合合并|Python 集合并集]]
+- [[Python 集交集|Python 集合交集]]
+- [[Python集合差集|Python 集合差集]]
+- [[Python 对称差分|Python 集合对称差]]
+- [[Python issubset|Python 子集判断]]
+- [[Python issuperset|Python 超集判断]]
+- [[Python 不相交集|Python 不相交判断]]
+
+### 循环 else
+
+- [[Python for…else|Python for...else]]
+- [[Python while else|Python while...else]]
+
+## 5. 当前学习状态
+
+### 已经开始形成手写能力
+
+- `for + if + append + return`
+- 基础函数
+- 列表遍历与索引
+- 成员判断 `in / not in`
+- 基础排序思路与冒泡排序
+- 列表推导式
+- `filter()` 基础结构
+- `sorted(..., key=lambda ...)`
+
+### 目前需要重点巩固
+
+- lambda 不看笔记从零写的熟练度
+- `sort()` 与 `sorted()` 的行为差异
+- `map/filter` 返回迭代结果以及为什么有时需要 `list()`
+- 字典的 `get/items/keys/values`
+- 集合运算在实际问题里的选择
+- 综合题先拆步骤再写代码
+
+## 6. 接下来的建议知识链
+
+当前字典与集合练熟后：
+
+```text
+异常处理
+→ 文件读写
+→ JSON
+→ 模块与 import
+→ pip / venv
+→ 面向对象基础
+→ requests / httpx
+→ pytest
+→ FastAPI
+```
+
+这条路线优先服务于 **Python 后端 + AI 应用开发**，不需要为了“学完 Python 所有特性”而拖慢进入工程实践的时间。
