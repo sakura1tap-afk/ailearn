@@ -19,11 +19,9 @@
 - [Python 学习导航](00%20Python学习导航.md)
 - [Python 知识图谱](01%20Python知识图谱.md)
 - [易混概念与练习复盘](02%20易混概念与练习复盘.md)
-- [Day03 整理版](week01/day03/00%20Day03整理版.md)
-- [Day04 整理版](week01/day04/00%20Day04整理版.md)
+- [Day03 列表与迭代](week01/day03/Day03%20列表与迭代.md)
+- [Day04 字典与集合](week01/day04/Day04%20字典与集合.md)
 
 主要参考 [PythonTutorial](https://www.pythontutorial.net/)，同时保留 VSCode 手写练习、错误代码和个人复盘。
-
-> 原始学习摘录中可能存在机翻痕迹；整理版优先使用更准确的中文术语和更适合复习的知识结构。
 
 笔记中的双向链接建议在 Obsidian 中阅读。
