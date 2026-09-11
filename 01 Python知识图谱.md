@@ -86,7 +86,7 @@ flowchart TD
 | 按条件筛选 | [[Python中筛选列表元素|filter()]] | `filter(fn, iterable)` |
 | 多值归约成一个值 | [[Python的reduce（） 函数将列表简化为单一值|reduce()]] | 来自 functools |
 
-Day03 的整理入口：[[week01/day03/00 Day03整理版|Day03 整理版]]。
+Day03 主线：[[week01/day03/Day03 列表与迭代|Day03 列表与迭代]]。
 
 ## 6. 字典
 
@@ -122,7 +122,7 @@ set
 
 关联：[[Python集合合并]]、[[Python 集交集]]、[[Python集合差集]]、[[Python 对称差分]]、[[Python issubset]]、[[Python issuperset]]、[[Python 不相交集]]。
 
-Day04 的整理入口：[[week01/day04/00 Day04整理版|Day04 整理版]]。
+Day04 主线：[[week01/day04/Day04 字典与集合|Day04 字典与集合]]。
 
 ## 8. 当前最需要形成的能力
 
