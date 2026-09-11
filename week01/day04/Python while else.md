@@ -88,4 +88,4 @@ else:
 
 如果在 `n == 2` 时加入 `break`，结果又会怎样？
 
-关联：[[Python while]]、[[Python break]]、[[Python for…else]]、[[00 Day04整理版]]
+关联：[[Python while]]、[[Python break]]、[[Python for…else]]、[[Day04 字典与集合]]
