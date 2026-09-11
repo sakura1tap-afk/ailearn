@@ -108,4 +108,4 @@ else:
     print("not found")
 ```
 
-关联：[[Python break]]、[[Python while else]]、[[00 Day04整理版]]
+关联：[[Python break]]、[[Python while else]]、[[Day04 字典与集合]]
