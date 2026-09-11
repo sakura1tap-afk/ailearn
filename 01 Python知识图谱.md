@@ -5,71 +5,138 @@ tags:
 
 # Python 知识图谱
 
-返回 [[00 Python学习导航]]。箭头表示“先掌握左边，更容易理解右边”；平行分支不必按唯一顺序学习。下图是概览，后面的双向链接可以直接打开笔记。
+返回 [[00 Python学习导航]]。
+
+下面的箭头表示“前面的知识更适合作为后面的基础”，不是死板课程顺序。
 
 ```mermaid
 flowchart TD
-    A[基础语法与变量] --> B[数字、字符串、布尔与转换]
+    A[基础语法与变量] --> B[数字 / 字符串 / 布尔]
     B --> C[比较与逻辑运算]
-    C --> D[条件分支]
-    D --> E[循环与流程控制]
-    D --> F[函数与参数]
-    B --> G[列表与元组]
-    G --> H[解包、切片与查找]
-    E --> I[for 遍历与 enumerate]
-    H --> I
-    I --> J[可迭代对象与迭代器]
-    F --> K[lambda 与函数传参]
-    I --> K
-    K --> L[sort 与 sorted]
-    G --> L
-    K --> M[map 与 filter]
-    J --> M
-    M --> N[reduce 累积归约]
-    F --> O[递归与终止条件]
-    I --> P[列表练习复盘]
-    L --> P
-    F --> P
+    C --> D[if 条件分支]
+    D --> E[for / while 循环]
+    E --> F[break / continue / pass]
+
+    D --> G[函数与参数]
+    G --> H[lambda]
+    G --> I[递归]
+
+    B --> J[列表]
+    J --> K[元组]
+    J --> L[切片 / 查找 / 解包]
+    E --> M[for 遍历 / enumerate]
+    L --> M
+    M --> N[可迭代对象 / 迭代器]
+
+    H --> O[sort / sorted]
+    J --> O
+    H --> P[map / filter]
+    N --> P
+    P --> Q[reduce]
+    M --> R[列表推导式]
+
+    J --> S[字典]
+    R --> T[字典推导式]
+    S --> T
+
+    J --> U[集合]
+    R --> V[集合推导式]
+    U --> V
+    U --> W[并集 / 交集 / 差集 / 对称差]
+    W --> X[subset / superset / disjoint]
+
+    E --> Y[for...else / while...else]
 ```
 
-## 1. 值 → 条件 → 分支
+## 1. 基础值与条件
 
-[[python变量|Python 变量]] → [[python数字|Python 数字]] → [[python算术|Python 算术运算符]] → [[python赋值操作符|Python 复合赋值运算符]]
+[[python变量|变量]] → [[python数字|数字]] / [[python字符串|字符串]] / [[python布尔|布尔]] → [[python比较|比较]] → [[Python 逻辑运算符|逻辑运算]] → [[python if语句|if]]
 
-[[python变量|Python 变量]] → [[python字符串|Python 字符串]] → [[类型转换|Python 类型转换]]
+## 2. 循环与流程控制
 
-[[python布尔|Python 布尔值与真值判断]] → [[python比较|Python 比较运算符]] → [[Python 逻辑运算符|Python 逻辑运算符]] → [[python if语句|Python if 条件分支]] → [[Python三进制算符|Python 三元表达式（条件表达式）]]
+[[Python范围循环|for + range]]、[[Python while|while]] → [[Python break|break]] / [[Python continue|continue]] / [[Python pass|pass]]
 
-## 2. 重复执行 → 遍历数据
+在理解 `break` 后，再学习 [[Python for…else|for...else]] 和 [[Python while else|while...else]] 会更自然。
 
-[[Python范围循环|Python for 与 range]] → [[Python 列表|Python 列表]] → [[For 循环|Python for 遍历列表与 enumerate]] → [[Python 迭代|Python 可迭代对象与迭代器]]
+## 3. 函数
 
-[[Python while|Python while 循环]] 与 [[Python范围循环|Python for 与 range]] 是两种循环方式；循环内的跳转见 [[Python break|Python break]]、[[Python continue|Python continue]]。[[Python pass|Python pass]] 只用于占位。
+[[Python 函数|函数]] → [[Python 默认参数|默认参数]] → [[Python 关键词参数|关键字参数]] → [[Python Lambda表达式|lambda]]
 
-## 3. 序列 → 位置与结构
+分支知识：[[Python 递归函数|递归函数]]。
 
-[[python字符串|Python 字符串]] → [[Python 列表|Python 列表]] → [[Python元组|Python 元组]] → [[Python 中解包列表|Python 序列解包]]
+## 4. 列表与序列
 
-从 [[Python 列表|Python 列表]] 分出 [[Python 列表切片|Python 列表切片]] 和 [[查找列表中元素的索引|Python 列表查找与成员判断]]；解包又连接到 [[For 循环|Python for 遍历列表与 enumerate]] 中的 `(index, item)`。
+[[Python 列表|列表]] → [[Python元组|元组]] → [[Python 中解包列表|序列解包]]
 
-## 4. 函数 → 把行为传进去
+从列表继续分出：
+- [[Python 列表切片|切片]]
+- [[查找列表中元素的索引|成员判断与 index]]
+- [[For 循环|for 遍历 / enumerate]]
+- [[Python 列表解析|列表推导式]]
 
-[[Python 函数|Python 函数]] → [[Python 默认参数|Python 默认参数]] → [[Python 关键词参数|Python 关键字参数]] → [[Python Lambda表达式|Python lambda 表达式]]
+## 5. 迭代与数据处理
 
-文档分支：[[python注释|Python 注释]] → [[Python 函数文档字符串|Python 函数文档字符串]]。递归分支：[[Python 函数|Python 函数]] + [[python if语句|Python if 条件分支]] → [[Python 递归函数|Python 递归函数]]。
+[[Python 迭代|迭代器]] 是理解 `map()` / `filter()` 返回值的重要前置。
 
-## 5. 一批数据 → 排序、转换、筛选与归约
-
-| 想完成的任务 | 对应笔记 | 与已有知识的连接 |
+| 目标 | 工具 | 重点 |
 | --- | --- | --- |
-| 修改原列表的顺序 | [[Python 排序列表|Python list.sort 原地排序]] | 列表 + key 函数 |
-| 得到新排序列表 | [[Python sorted|Python sorted 返回新列表]] | 与原地排序对照 |
-| 逐项转换 | [[Python map（） 函数转换列表元素|Python map 转换元素]] | for + 函数 + 迭代器 |
-| 按条件保留元素 | [[Python中筛选列表元素|Python filter 筛选元素]] | for + if + 迭代器 |
-| 多项累积成一个结果 | [[Python的reduce（） 函数将列表简化为单一值|Python reduce 累积归约]] | 累加器 + 双参数函数 |
+| 原地排序列表 | [[Python 排序列表|list.sort()]] | 修改原列表，返回 None |
+| 得到新排序结果 | [[Python sorted|sorted()]] | 返回新列表 |
+| 转换每个元素 | [[Python map（） 函数转换列表元素|map()]] | `map(fn, iterable)` |
+| 按条件筛选 | [[Python中筛选列表元素|filter()]] | `filter(fn, iterable)` |
+| 多值归约成一个值 | [[Python的reduce（） 函数将列表简化为单一值|reduce()]] | 来自 functools |
 
-## 6. 用自己的错题检验知识链
+Day03 的整理入口：[[week01/day03/00 Day03整理版|Day03 整理版]]。
 
-[[今日练习|打开原练习记录]] → [[02 易混概念与练习复盘|按错误类型回查知识]]。
+## 6. 字典
 
-Obsidian 的关系图谱会读取笔记中的 双向链接。打开任意主题的“局部关系图”可以看相邻概念；本页的 Mermaid 图用于解释方向，真正可点击的知识关系由正文与各篇的双向链接提供。图谱里的导航链接、前后篇链接不全是严格的依赖，判断依赖时以“前置知识”为准。
+[[Python 词典|字典]] 的核心是 `key -> value`。
+
+常用能力：
+
+```text
+读取 / get()
+→ 新增与修改
+→ del
+→ keys() / values() / items()
+→ for key, value in dict.items()
+→ 字典推导式
+```
+
+关联：[[Python 词典理解|字典推导式]]。
+
+## 7. 集合
+
+[[Python 集合|集合]] 的核心价值：**去重、快速成员判断、集合关系运算**。
+
+```text
+set
+├── union 并集
+├── intersection 交集
+├── difference 差集
+├── symmetric_difference 对称差
+├── issubset 子集
+├── issuperset 超集
+└── isdisjoint 不相交
+```
+
+关联：[[Python集合合并]]、[[Python 集交集]]、[[Python集合差集]]、[[Python 对称差分]]、[[Python issubset]]、[[Python issuperset]]、[[Python 不相交集]]。
+
+Day04 的整理入口：[[week01/day04/00 Day04整理版|Day04 整理版]]。
+
+## 8. 当前最需要形成的能力
+
+你的目标不是一次记住全部方法，而是把知识变成几个稳定模式：
+
+```text
+遍历数据 → for
+筛选数据 → if / filter / 推导式
+转换数据 → 表达式 / map
+排序数据 → sort / sorted
+累计结果 → 累加器 / reduce
+按键保存数据 → dict
+去重与集合关系 → set
+查找失败后做兜底 → for...else
+```
+
+真正的检验方式仍然是 [[02 易混概念与练习复盘]] + 手写代码。
