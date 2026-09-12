@@ -7,16 +7,17 @@ tags:
 
 这个仓库保留 `week/day` 作为学习时间线，同时提供一条更适合复习的知识路线。
 
-当前进度：**Week01 / Day04**。已经从基础语法进入到 **函数、列表处理、迭代器、字典与集合**。
+当前进度：**Week01 / Day05**。已经从基础语法进入到 **函数参数、异常处理、模块与包、类型提示**。
 
 优先入口：
 - [[01 Python知识图谱]]：看知识之间怎么连接。
 - [[02 易混概念与练习复盘]]：看当前最容易犯的错误。
-- [[week01/day03/Day03 列表与迭代|Day03 列表与迭代]]：复习列表处理、迭代、排序、map/filter/reduce。
-- [[week01/day04/Day04 字典与集合|Day04 字典与集合]]：复习字典、集合、集合运算与循环 else。
+- [[week01/day03/Day03 列表与迭代|Day03 列表与迭代]]：列表处理、迭代、排序、map/filter/reduce。
+- [[week01/day04/Day04 字典与集合|Day04 字典与集合]]：字典、集合、集合运算与循环 else。
+- [[week01/day05/Day05 函数参数、异常与模块|Day05 函数参数、异常与模块]]：`*args/**kwargs`、异常、模块、包、类型提示。
 
 > [!tip] 建议学习方式
-> 新知识先手写普通版本，再学习更简洁的 Python 写法。看懂不算掌握，关闭笔记后能自己写出来才算。
+> 新知识先弄清“解决什么问题”，再记语法。看懂不算掌握，关闭笔记后能自己写出来才算。
 
 ## 1. 基础语法｜Day01
 
@@ -59,7 +60,7 @@ tags:
 - [[Python 列表|Python 列表]]
 - [[week01/day02/今日练习|Day02 手写练习]]
 
-Day02 手写重点包括：列表求和、筛选偶数、查找目标、去重、冒泡排序与第二大元素。
+Day02 手写重点：列表求和、筛选偶数、查找目标、去重、冒泡排序与第二大元素。
 
 ## 3. 序列、迭代与数据处理｜Day03
 
@@ -87,8 +88,6 @@ Day02 手写重点包括：列表求和、筛选偶数、查找目标、去重�
 - [[Python的reduce（） 函数将列表简化为单一值|Python reduce 累积归约]]
 - [[week01/day03/今日练习|Day03 手写练习]]
 
-Day03 已经实际练到：切片、多列表返回、列表推导式、`filter()`、`sorted(key=lambda...)`、LeetCode 283 移动零。
-
 ## 4. 字典、集合与循环 else｜Day04
 
 先看：[[week01/day04/Day04 字典与集合|Day04 字典与集合]]
@@ -115,37 +114,63 @@ Day03 已经实际练到：切片、多列表返回、列表推导式、`filter(
 - [[Python for…else|Python for...else]]
 - [[Python while else|Python while...else]]
 
-## 5. 当前学习状态
+## 5. 函数参数、异常与模块｜Day05
+
+先看：[[week01/day05/Day05 函数参数、异常与模块|Day05 函数参数、异常与模块]]
+
+### 参数与解包
+
+- [[week01/day05/Python args|Python *args]]
+- [[week01/day05/Python kwargs|Python **kwargs]]
+- [[week01/day05/Python 解包元组|Python 元组与解包]]
+
+### 异常处理
+
+- [[week01/day05/Python try…except|Python try...except]]
+- [[week01/day05/Python try…except…finally|Python try...except...finally]]
+
+### 模块与代码组织
+
+- [[week01/day05/Python 模块|Python 模块]]
+- [[week01/day05/Python 包|Python 包]]
+- [[week01/day05/Python 模块搜索路径|Python 模块搜索路径]]
+- [[week01/day05/Python 私有函数|Python 私有函数约定]]
+
+### 类型与补充
+
+- [[week01/day05/Python 类型提示|Python 类型提示]]
+- [[week01/day05/Python do…while 模拟|Python 模拟 do...while]]
+- [[week01/day05/Python 部分函数|Python partial 部分函数]]
+
+## 6. 当前学习状态
 
 ### 已经开始形成手写能力
 
 - `for + if + append + return`
-- 基础函数
-- 列表遍历与索引
-- 成员判断 `in / not in`
-- 基础排序思路与冒泡排序
-- 列表推导式
-- `filter()` 基础结构
-- `sorted(..., key=lambda ...)`
+- 基础函数与参数
+- 列表遍历、查找、筛选
+- 字典 `key -> value` 与 `items()`
+- 集合交集、差集、子集 / 超集判断
+- 列表推导式、`filter()`、`sorted(key=...)`
+- 基础冒泡排序
 
 ### 目前需要重点巩固
 
-- lambda 不看笔记从零写的熟练度
-- `sort()` 与 `sorted()` 的行为差异
-- `map/filter` 返回迭代结果以及为什么有时需要 `list()`
-- 字典的 `get/items/keys/values`
-- 集合运算在实际问题里的选择
-- 综合题先拆步骤再写代码
+- 根据问题判断该选 `list / dict / set`
+- 跟踪变量里实际装的是什么数据
+- `return` 的位置和返回对象
+- `*args / **kwargs` 的“收集”与“解包”区别
+- `try...except` 在真实失败场景中的使用
+- 模块、包、虚拟环境之间的关系
+- 类型提示只是提示，不是运行时强制类型
 
-## 6. 接下来的建议知识链
+## 7. 接下来的建议知识链
 
-当前字典与集合练熟后：
+Day05 巩固后：
 
 ```text
-异常处理
-→ 文件读写
+文件读写
 → JSON
-→ 模块与 import
 → pip / venv
 → 面向对象基础
 → requests / httpx
@@ -153,4 +178,4 @@ Day03 已经实际练到：切片、多列表返回、列表推导式、`filter(
 → FastAPI
 ```
 
-这条路线优先服务于 **Python 后端 + AI 应用开发**，不需要为了“学完 Python 所有特性”而拖慢进入工程实践的时间。
+这条路线优先服务于 **Python 后端 + AI 应用开发**。目标不是“学完 Python 所有特性”，而是尽快形成能读代码、写代码和进入工程实践的能力。
