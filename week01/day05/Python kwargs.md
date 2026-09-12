@@ -1,124 +1,106 @@
 # Python `**kwargs`
 
-`**kwargs` 用来接收**数量不固定的关键字参数**。
-
-如果 `*args` 负责接住：
+`**kwargs` 用来让函数接收**任意数量的关键字参数**。
 
 ```python
-func(1, 2, 3)
-```
-
-那么 `**kwargs` 负责接住：
-
-```python
-func(name="Tom", age=18)
-```
-
-## 1. `**kwargs` 在函数内部是字典
-
-```python
-def show_info(**kwargs):
+def show_user(**kwargs):
     print(kwargs)
 
-show_info(name="Tom", age=18)
+show_user(name="Tom", age=18)
 ```
 
 输出：
 
 ```python
-{"name": "Tom", "age": 18}
+{'name': 'Tom', 'age': 18}
 ```
 
-所以：
+在函数内部，`kwargs` 是一个字典 `dict`。
 
-```text
-kwargs 是 dict（字典）
-```
+## 什么时候用
 
-你可以像普通字典一样使用它：
+当你不知道调用者会传多少个“名称=值”参数时，可以使用 `**kwargs`。
 
 ```python
-def show_info(**kwargs):
+def create_user(**kwargs):
     for key, value in kwargs.items():
         print(key, value)
-```
-
-## 2. 为什么要用它
-
-有些函数允许调用者传很多可选配置，而且参数数量不固定：
-
-```python
-def create_user(name, **kwargs):
-    print("name:", name)
-    print("other:", kwargs)
-
-create_user(name="Tom", age=18, city="Beijing")
-```
-
-此时：
-
-```text
-name = "Tom"
-kwargs = {"age": 18, "city": "Beijing"}
-```
-
-## 3. `**` 也可以在调用函数时解包字典
-
-```python
-def introduce(name, age):
-    print(name, age)
-
-user = {
-    "name": "Tom",
-    "age": 18
-}
-
-introduce(**user)
-```
-
-相当于：
-
-```python
-introduce(name="Tom", age=18)
-```
-
-所以同样要区分：
-
-```text
-定义函数：**kwargs  → 收集多个关键字参数
-调用函数：**some_dict → 把字典拆成关键字参数
-```
-
-## 4. 和 `*args` 放在一起
-
-常见形式：
-
-```python
-def func(a, *args, **kwargs):
-    print(a)
-    print(args)
-    print(kwargs)
 ```
 
 调用：
 
 ```python
-func(1, 2, 3, name="Tom", age=18)
+create_user(name="Alice", age=20, city="Beijing")
 ```
 
-得到：
+## 和普通参数一起使用
+
+```python
+def send_message(message, **kwargs):
+    print(message)
+    print(kwargs)
+
+send_message("hello", user="Tom", urgent=True)
+```
+
+此时：
 
 ```text
-a = 1
-args = (2, 3)
-kwargs = {"name": "Tom", "age": 18}
+message = "hello"
+kwargs = {"user": "Tom", "urgent": True}
 ```
 
-## 当前阶段记住
+## 调用函数时的 `**`
+
+定义函数时：
+
+```python
+def func(**kwargs):
+```
+
+`**` 表示把多个关键字参数**收集成字典**。
+
+调用函数时：
+
+```python
+config = {
+    "host": "localhost",
+    "port": 8000
+}
+
+func(**config)
+```
+
+`**` 表示把字典**解包成关键字参数**。
+
+例如：
+
+```python
+def connect(host, port):
+    print(host, port)
+
+config = {"host": "localhost", "port": 8000}
+connect(**config)
+```
+
+等价于：
+
+```python
+connect(host="localhost", port=8000)
+```
+
+## `*args` 和 `**kwargs` 对比
 
 ```text
-*args   → 多出来的位置参数 → tuple
-**kwargs → 多出来的关键字参数 → dict
+*args    → 不定数量的位置参数 → tuple
+**kwargs → 不定数量的关键字参数 → dict
 ```
 
-`args` 和 `kwargs` 只是惯用名字，真正决定行为的是 `*` 和 `**`。
+常见组合：
+
+```python
+def func(a, *args, **kwargs):
+    ...
+```
+
+当前阶段重点不是强行使用它们，而是能看懂第三方库、框架和别人写的函数签名。
