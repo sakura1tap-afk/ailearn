@@ -1,20 +1,20 @@
-## Python 模块搜索路径简介[](https://www.pythontutorial.net/python-basics/python-module-search-path/#introduction-to-python-module-search-path "Anchor for Introduction to Python module search path")
+# Python 模块搜索路径
 
-当你在程序中导入[模块](https://www.pythontutorial.net/python-basics/python-module/)时：
+当你写：
 
 ```python
 import module
 ```
 
-Python 将从以下来源搜索该文件：`module.py`
+Python 必须先找到对应的模块文件。
 
-- 程序运行的当前文件夹。
-- 如果你之前设置了 [PYTHONPATH](https://docs.python.org/3/using/cmdline.html#envvar-PYTHONPATH) 环境变量，那是列表里指定的文件夹。
-- 这是一份安装相关文件夹列表，这些文件夹是你安装Python时配置的。
+它会按照自己的搜索路径查找，这些路径保存在：
 
-Python 将生成的搜索路径存储在来自模块的变量中。`sys.path``sys`
+```python
+sys.path
+```
 
-以下程序展示了当前的模块搜索路径：
+可以查看：
 
 ```python
 import sys
@@ -23,22 +23,71 @@ for path in sys.path:
     print(path)
 ```
 
-这是Windows上的示例输出：
+## 可以先这样理解
 
-```bash
-C:pythonpython313.zip
-C:pythonDLLs
-C:pythonLib
-C:python
-C:pythonLibsite-packages
+Python 通常会从这些位置寻找模块：
+
+```text
+当前程序相关目录
+Python 标准库目录
+当前虚拟环境/解释器的 site-packages
+PYTHONPATH 中额外指定的目录
 ```
 
-为了确保Python总能找到，你需要：`module.py`
+所以出现：
 
-- 把它放进程序将要执行的文件夹里。`module.py`
-- 在环境变量中包含包含 的文件夹。或者你可以把它放在变量里的某个文件夹里。`module.py``PYTHONPATH``module.py``PYTHONPATH`
-- 把 放在安装相关的文件夹里。`module.py`
-## 摘要[#](https://www.pythontutorial.net/python-basics/python-module-search-path/#summary "Anchor for Summary")
+```text
+ModuleNotFoundError
+```
 
-- 导入模块时，Python 会从变量指定的文件夹中搜索模块文件。`sys.path`
-- Python 允许你通过修改、添加和删除变量中的元素来修改模块搜索路径。`sys.path`
+通常意味着：
+
+> Python 沿着 `sys.path` 找了一圈，没有找到你要导入的模块。
+
+## 常见排查方式
+
+先确认：
+
+```text
+1. 模块/包是否真的存在
+2. 文件名有没有写错
+3. 当前使用的是不是正确的 Python 解释器或虚拟环境
+4. 第三方包是否已经安装
+5. 项目目录结构和 import 路径是否合理
+```
+
+例如第三方包没装：
+
+```bash
+pip install requests
+```
+
+装错虚拟环境，也可能出现“明明装了但 import 不到”。
+
+## 不要随便修改 `sys.path`
+
+虽然可以：
+
+```python
+import sys
+sys.path.append("某个目录")
+```
+
+但在正常项目里，这通常不应该成为主要解决方案。
+
+更好的做法一般是：
+
+```text
+整理正确的项目包结构
+使用正确的虚拟环境
+正确安装项目或第三方依赖
+```
+
+## 记忆
+
+```text
+import 找不到模块
+→ 先想到 sys.path / 环境 / 项目结构
+```
+
+当前阶段知道 Python 不是“全硬盘乱找文件”，而是沿固定搜索路径查找，就已经足够。
