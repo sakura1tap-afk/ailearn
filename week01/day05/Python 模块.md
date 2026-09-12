@@ -1,114 +1,133 @@
+# Python 模块（module）
 
-## Python 模块简介[](https://www.pythontutorial.net/python-basics/python-module/#introduction-to-python-modules "Anchor for Introduction to Python modules")
+一个 `.py` 文件就可以看成一个 Python 模块。
 
-模块是一种具有特定功能的软件。Python 模块是一个包含 Python 代码的文件。
+例如：
 
-例如，在构建购物车应用时，你可以有一个模块用于计算价格，另一个模块用于管理购物车中的商品。每个模块都是独立的 Python 源代码文件。
-
-模块的名称由文件名指定，但不含扩展名。例如，如果你有一个名为 的文件，模块名是 。`.py``pricing.py``pricing`
-
-## 编写 Python 模块[](https://www.pythontutorial.net/python-basics/python-module/#writing-python-modules "Anchor for Writing Python modules")
-
-首先，创建一个名为的新文件，并添加以下代码：`pricing.py`
-
-```python
-# pricing.py
-
-def get_net_price(price, tax_rate, discount=0):
-    discounted_price = price * (1 - discount) 
-    net_price = discounted_price * (1 + tax_rate) 
-    return net_price
-
-
-def get_tax(price, tax_rate=0):
-    return price * tax_rate
+```text
+pricing.py
 ```
 
-定价模块包含两个功能，分别计算销售价格、税率和折扣的净价和税收。
-## 导入模块对象[](https://www.pythontutorial.net/python-basics/python-module/#importing-module-objects "Anchor for Importing module objects")
+模块名就是：
 
-要使用模块中定义的对象，可以使用语句。`import`
-
-该声明有几种形式，我们将在接下来的章节中讨论。`import`
-
-### 进口<module_name>[](https://www.pythontutorial.net/python-basics/python-module/#import-module_name "Anchor for import <module_name>")
-
-要使用模块中定义的对象，你需要用以下语句导入该模块：`import`
-
-```python
-import module_name
+```text
+pricing
 ```
 
-例如，要使用文件中的模块，你需要使用以下语句：`pricing``main.py`
+模块的意义是把代码按功能拆开，避免所有函数、变量都堆在一个文件里。
+
+## 示例
+
+`pricing.py`：
+
+```python
+def get_net_price(price, tax_rate):
+    return price * (1 + tax_rate)
+```
+
+`main.py`：
 
 ```python
 import pricing
-```
-导入模块时，Python 会执行对应文件中的所有代码。在这个例子中，Python 从文件中执行代码。此外，Python 会在当前模块中添加模块名称。`pricing.py`
 
-这个模块名称允许你访问当前模块中导入模块中的函数、变量等。例如，你可以调用导入模块中定义的[函数](https://www.pythontutorial.net/python-basics/python-functions/)，使用以下语法：
-
-```python
-module_name.function_name()
+result = pricing.get_net_price(100, 0.1)
+print(result)
 ```
 
-以下展示了如何在文件中使用模块中定义的函数：`get_net_price()``pricing``main.py`
+这里：
+
+```text
+pricing                  → 模块
+pricing.get_net_price()  → 调用模块里的函数
+```
+
+## 常见导入方式
+
+### 导入整个模块
 
 ```python
-# main.py
 import pricing
 
-
-net_price = pricing.get_net_price(
-    price=100,
-    tax_rate=0.01
-)
-
-print(net_price)
+pricing.get_net_price(...)
 ```
 
-输出：
+优点是来源清楚，看到 `pricing.xxx` 就知道函数来自哪个模块。
+
+### 只导入需要的对象
 
 ```python
-101.0
+from pricing import get_net_price
+
+get_net_price(...)
 ```
-以下示例将函数从模块重新命名为函数：`get_net_price()``pricing``calculate_net_price()`
+
+### 起别名
 
 ```python
-from pricing import get_net_price as calculate_net_price
-
-net_price = calculate_net_price(
-    price=100,
-    tax_rate=0.1,
-    discount=0.05
-)
+from pricing import get_net_price as calculate_price
 ```
-如果你想在模块中引用对象而不在模块名称前缀，可以用以下语法显式导入它们：
+
+也可以给模块起别名：
 
 ```python
-from module_name import fn1, fn2
+import numpy as np
 ```
 
-现在，你可以使用导入的函数，而无需指定模块名，就像这样：
+## 不推荐 `import *`
 
 ```python
-fn1()
-fn2()
+from pricing import *
 ```
 
-### 从<module_name>导入* ：导入模块中的所有对象[](https://www.pythontutorial.net/python-basics/python-module/#from-module_name-import-import-all-objects-from-a-module "Anchor for from <module_name> import * : import all objects from a module")
+这种写法会把很多名字直接放进当前文件，容易产生名称冲突，也不容易看出函数来自哪里。
 
-要导入模块中的每个对象，可以使用以下语法：
+实际项目中尽量显式导入。
+
+## 导入模块时会发生什么
+
+第一次导入模块时，Python 会执行该模块顶层代码。
+
+因此模块通常把“真正运行程序”的代码放进：
 
 ```python
-from module_name import *
+if __name__ == "__main__":
+    ...
 ```
 
-该语句将所有公共标识符，包括[变量](https://www.pythontutorial.net/python-basics/python-variables/)、[常量](https://www.pythontutorial.net/python-basics/python-constants/)、[函数](https://www.pythontutorial.net/python-basics/python-functions/)、[类](https://www.pythontutorial.net/python-oop/python-class/)等，导入到程序中。`import`
+例如：
 
-但这并不是好习惯，因为如果导入的模块有相同的对象，第二个模块的对象会覆盖第一个模块。这个项目可能不会像你预期的那样有效。
+```python
+def add(a, b):
+    return a + b
 
-## 摘要[](https://www.pythontutorial.net/python-basics/python-module/#summary "Anchor for Summary")
 
-- 模块是一个带有扩展名的 Python 源代码文件。模块名称是 Python 文件名，但没有扩展名。`.py`
-- 要使用模块中的对象，你可以通过 语句导入它们。`import`
+if __name__ == "__main__":
+    print(add(1, 2))
+```
+
+直接运行这个文件时，测试代码会执行；被其他文件 `import` 时不会执行这部分。
+
+## 什么时候开始需要模块
+
+代码只有几十行时，一个文件还能看。
+
+项目变大后通常会按职责拆分：
+
+```text
+main.py        程序入口
+config.py      配置
+database.py    数据库相关
+models.py      数据结构
+services.py    业务逻辑
+```
+
+以后做 FastAPI、RAG、Agent 项目时，模块化会非常常见。
+
+## 记忆
+
+```text
+模块 = 一个承担某类功能的 .py 文件
+import = 把其他模块中的代码拿来使用
+```
+
+当前阶段重点会写 `import module` 和 `from module import name` 即可。
