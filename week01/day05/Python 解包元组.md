@@ -1,206 +1,174 @@
+# Python 元组与解包
 
-## 审查 Python 元组[](https://www.pythontutorial.net/python-basics/python-unpacking-tuple/#reviewing-python-tuples "Anchor for Reviewing Python tuples")
+## 元组怎么写
 
-Python 用逗号（）定义[元组](https://www.pythontutorial.net/python-basics/python-tuples/)，而不是括号。例如，以下定义了一个包含两个元素的元组：`,``()`
-
-```python
-1,2 
-```
-
-Python 使用括号使元组更清晰：
+Python 元组主要由**逗号**决定：
 
 ```python
-(1, 2)
+point = 10, 20
 ```
 
-Python 还使用括号来创建空元组：
+通常为了更清楚，会写成：
 
 ```python
-()
+point = (10, 20)
 ```
 
-此外，你可以这样使用构造函数：`tuple()`
+单元素元组要保留逗号：
 
 ```python
-tuple()
+one = (1,)
 ```
 
-要定义一个只有一个元素的元组，你仍然需要使用逗号。以下示例说明了如何定义一个元素元组：
-
-```python
-1,
-```
-它相当于以下内容：
-
-```python
-(1, )
-```
-
-注意以下是[整数](https://www.pythontutorial.net/advanced-python/python-integers/)，而非元组：
+而：
 
 ```python
 (1)
 ```
 
-## 拆包元组[](https://www.pythontutorial.net/python-basics/python-unpacking-tuple/#unpacking-a-tuple "Anchor for Unpacking a tuple")
+只是整数 `1`。
 
-解包元组意味着将元组的元素拆分为单个[变量](https://www.pythontutorial.net/python-basics/python-variables/)。例如：
+## 什么是解包
+
+解包就是把一组数据拆给多个变量：
 
 ```python
-x, y = (1, 2)
+x, y = (10, 20)
 ```
 
-左侧：
+结果：
 
-```python
-x, y
-```
-
-是两个变量和的元组。`x``y`
-
-右侧也是两个整数和的元组。`1``2`
-
-该表达式将右侧（1， 2）的元组元素分配给左侧的每个变量（x， y），基于每个元素的相对位置。
-
-在上述例子中，将取 ，且 将取 。`x``1``y``2`
-
-再举一个例子：
-
-```python
-x, y ,z = 10, 20, 30
-```
-
-右侧是三个整数、 、 的元组。你可以快速查看其类型如下：`10``20``30`
-
-```python
-numbers = 10, 20, 30
-print(type(numbers))
-```
-
-输出：
-
-```python
-<class 'tuple'>
-```
-
-在上述例子中，变量 、 和 分别取值 、 和 。`x``y``z``10``20``30`
-
-## 使用解包元组交换两个变量的值[](https://www.pythontutorial.net/python-basics/python-unpacking-tuple/#using-unpacking-tuple-to-swap-values-of-two-variables "Anchor for Using unpacking tuple to swap values of two variables")
-
-传统上，交换两个变量的值时，会使用类似这样的临时变量：
-
-```python
+```text
 x = 10
 y = 20
-
-print(f'x={x}, y={y}')
-
-tmp = x
-x = y
-y = tmp
-
-print(f'x={x}, y={y}')
-```
-输出：
-
-```python
-x=10, y=20
-x=20, y=10   
 ```
 
-在 Python 中，你可以使用解包元组语法来实现相同的结果：
-以下表达式交换两个变量 x 和 y 的值。
+这也是你之前已经用过的：
 
 ```python
 x, y = y, x
 ```
 
-在此表达式中，Python 先计算右侧，然后将左侧变量赋值到右侧。
+Python 会先计算右边，再分别赋值给左边。
 
-## ValueError：数值太多无法解析[](https://www.pythontutorial.net/python-basics/python-unpacking-tuple/#valueerror-too-many-values-to-unpack "Anchor for ValueError: too many values to unpack")
-
-以下示例将元组的元素拆包为变量。但这会导致一个错误：
+## 数量必须匹配
 
 ```python
-x, y = 10, 20, 30
+x, y = (10, 20, 30)
 ```
 
-错误：
+会报：
+
+```text
+ValueError: too many values to unpack
+```
+
+因为右边有 3 个值，左边只有 2 个变量。
+
+如果某个值不需要，可以用 `_` 表示“这里我不关心”：
 
 ```python
-ValueError: too many values to unpack (expected 2)
+x, _, z = (10, 20, 30)
 ```
 
-这个误差是因为右侧返回三个值，而左侧只有两个变量。
+`_` 本质上仍然是普通变量，只是 Python 社区习惯用它表示“这个值不用”。
 
-为了解决这个问题，你可以添加一个变量：`_`
+## 扩展解包 `*`
+
+如果想把剩下的值全部收集起来：
 
 ```python
-x, y, _ = 10, 20, 30
+first, *rest = (10, 20, 30, 40)
 ```
-该变量在 Python 中是一个正则变量。按照惯例，它被称为虚拟变量。`_`
 
-通常，你不在意时用虚拟变量解包，之后再用它的值。
+结果：
 
-## 使用*操作符进行扩展拆包[](https://www.pythontutorial.net/python-basics/python-unpacking-tuple/#extended-unpacking-using-the-operator "Anchor for Extended unpacking using the * operator")
+```text
+first = 10
+rest = [20, 30, 40]
+```
 
-有时候，你不想把元组里的每一项都拆包。例如，你可能想拆解第一和第二元素。在这种情况下，你可以使用操作符。例如：`*`
+注意：`rest` 得到的是列表。
+
+也可以：
 
 ```python
-r, g, *other = (192, 210, 100, 0.5)
+first, *middle, last = (1, 2, 3, 4, 5)
 ```
 
-输出：
+结果：
+
+```text
+first = 1
+middle = [2, 3, 4]
+last = 5
+```
+
+一次解包赋值中只能有一个带 `*` 的变量。
+
+## 你已经在字典遍历里用过解包
 
 ```python
-192
-210
-[100, 0.5]
+scores = {
+    "Tom": 78,
+    "Alice": 95
+}
+
+for name, score in scores.items():
+    print(name, score)
 ```
 
-在这个例子中，Python 将 映射到 。此外，Python 会把剩余元素和打包成列表，并将其赋值到变量上。`192``r``210``g``100``0.5``other`
-
-请注意，在拆包任务的左侧，你只能使用一次操作符。`*`
-
-以下示例会导致错误：
+`scores.items()` 每次给出类似：
 
 ```python
-x, y, *z, *t = (10, 20, 30, '10:30')
+("Tom", 78)
 ```
 
-错误：
+然后：
 
 ```python
-SyntaxError: two starred expressions in assignment
+name, score = ("Tom", 78)
 ```
 
-## 使用右侧的*操作符[](https://www.pythontutorial.net/python-basics/python-unpacking-tuple/#using-the-operator-on-the-right-hand-side "Anchor for Using the * operator on the right hand side")
+这就是解包。
 
-Python 允许你使用右侧的操作符。假设你有两个元组：`*`
+## 右侧的 `*`：拆开序列
 
 ```python
-odd_numbers = (1, 3, 5)
-even_numbers = (2, 4, 6)
+a = (1, 2, 3)
+b = (4, 5, 6)
+
+numbers = (*a, *b)
 ```
 
-以下示例使用该操作符来解包这些元组并将其合并为一个元组：`*`
+结果：
 
 ```python
-odd_numbers = (1, 3, 5)
-even_numbers = (2, 4, 6)
-
-numbers = (*odd_numbers, *even_numbers)
-print(numbers)
+(1, 2, 3, 4, 5, 6)
 ```
 
-输出：
+调用函数时也能用：
 
 ```python
-(1, 3, 5, 2, 4, 6)
+def add(a, b):
+    return a + b
+
+nums = (10, 20)
+add(*nums)
 ```
 
-## 摘要[](https://www.pythontutorial.net/python-basics/python-unpacking-tuple/#summary "Anchor for Summary")
+等价于：
 
-- Python 使用逗号（）来定义元组，而不是括号。`,`
-- 解包元组意味着将元组的单个元素分配给多个变量。
-- 使用该操作符将解包赋值的剩余元素分配到列表中，并赋值到变量。`*`
+```python
+add(10, 20)
+```
+
+## 记忆
+
+```text
+左边 a, b = data → 把数据拆给变量
+左边 *rest       → 收集剩余值
+右边 *data       → 把序列拆开
+```
+
+当前阶段重点是看懂和会用，不需要把“元组解包”当成新的复杂体系。
