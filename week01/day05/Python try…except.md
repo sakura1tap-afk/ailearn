@@ -1,51 +1,26 @@
 # Python `try...except`
 
-异常处理解决的是一个非常实际的问题：**程序运行时出错了，能不能别直接崩掉，而是自己处理。**
+程序语法正确，也可能在运行时失败。这种运行期间出现的问题叫 **异常（exception）**。
 
-## 1. 语法错误和异常不是一回事
-
-语法错误：代码本身写得不合法。
-
-```python
-if x > 10
-    print(x)
-```
-
-这里缺少 `:`，程序甚至不能正常开始执行。
-
-异常（exception）：代码语法没问题，但运行过程中出了问题。
-
-```python
-int("abc")
-```
-
-这会产生：
+常见异常：
 
 ```text
-ValueError
+ValueError        值不符合要求
+TypeError         类型不合适
+NameError         使用了未定义的名字
+KeyError          字典中不存在这个 key
+IndexError        下标越界
+ZeroDivisionError 除以 0
+FileNotFoundError 文件不存在
 ```
 
-再比如：
-
-```python
-10 / 0
-```
-
-会产生：
-
-```text
-ZeroDivisionError
-```
-
-## 2. `try...except` 在干什么
-
-基本结构：
+## 基本结构
 
 ```python
 try:
-    # 可能出错的代码
-except SomeError:
-    # 出现指定异常时怎么处理
+    # 可能发生异常的代码
+except 某种异常:
+    # 发生对应异常后怎么处理
 ```
 
 例如：
@@ -54,58 +29,23 @@ except SomeError:
 try:
     age = int(input("请输入年龄："))
 except ValueError:
-    print("请输入数字")
+    print("请输入整数")
 ```
 
-如果输入：
+执行逻辑：
 
 ```text
-18
+try 正常完成
+→ 跳过 except
+
+try 发生 ValueError
+→ 立即停止 try 中剩余代码
+→ 执行对应 except
 ```
 
-正常执行。
+## 为什么不能什么都捕获
 
-如果输入：
-
-```text
-abc
-```
-
-`int("abc")` 会产生 `ValueError`，程序进入 `except ValueError:`，而不是直接崩掉。
-
-## 3. 执行顺序
-
-```text
-进入 try
-↓
-正常执行
-├─ 没异常 → except 跳过
-└─ 出异常 → try 剩余代码停止 → 去找匹配的 except
-```
-
-例如：
-
-```python
-try:
-    print("A")
-    num = int("abc")
-    print("B")
-except ValueError:
-    print("C")
-```
-
-输出：
-
-```text
-A
-C
-```
-
-`B` 不会执行，因为异常出现后，`try` 中后面的代码被跳过。
-
-## 4. 尽量捕获具体异常
-
-不推荐一上来就写：
+不推荐：
 
 ```python
 try:
@@ -114,88 +54,82 @@ except:
     print("出错了")
 ```
 
-因为这样会把很多不同问题混在一起。
+因为它会把不同错误全部混在一起，很难定位真正原因。
 
-更清楚的是：
+优先捕获具体异常：
 
 ```python
 try:
-    previous = float(input("上一期销售额："))
-    current = float(input("当前销售额："))
-    change = (current - previous) / previous
+    value = int(text)
 except ValueError:
-    print("请输入数字")
-except ZeroDivisionError:
-    print("上一期销售额不能为 0")
+    print("无法转换为整数")
 ```
 
-两个异常代表两个完全不同的问题。
-
-## 5. `as e` 是什么
-
-可以把异常对象保存到变量里：
+## 处理多种异常
 
 ```python
 try:
-    num = int("abc")
-except ValueError as e:
-    print(e)
+    number = int(input("请输入数字："))
+    result = 100 / number
+except ValueError:
+    print("输入必须是整数")
+except ZeroDivisionError:
+    print("不能输入 0")
 ```
 
-`e` 里面包含这次异常的具体信息。
+如果几种异常处理方式相同，也可以写：
 
-## 6. `Exception` 什么时候用
+```python
+except (ValueError, TypeError):
+    ...
+```
 
-有时程序边界处确实需要兜底：
+## 获取异常信息
+
+```python
+try:
+    result = 10 / 0
+except ZeroDivisionError as error:
+    print(error)
+```
+
+`error` 是异常对象，里面保存了错误信息。
+
+## `except Exception`
+
+有时需要在程序边界兜底：
 
 ```python
 try:
     ...
-except Exception as e:
-    print("发生异常：", e)
+except Exception as error:
+    print(f"程序执行失败：{error}")
 ```
 
-但学习和业务代码中，**能明确知道异常类型时优先捕获具体异常**。
+但不要用它代替所有具体异常处理。开发时过度兜底可能把真正的 bug 藏起来。
 
-否则很容易把真正的 bug 也一起吞掉。
+## 实际开发中为什么重要
 
-## 7. 异常处理不是“让错误消失”
-
-它的真正作用是：
+以后做 Python 后端和 AI 应用时，经常有不可完全控制的失败：
 
 ```text
-预料某些运行时失败
-↓
-识别是什么问题
-↓
-决定程序接下来怎么办
+用户输入格式错误
+读取文件失败
+JSON 解析失败
+调用模型 API 超时
+数据库连接失败
+第三方服务返回错误
 ```
 
-例如未来做 API 时：
+`try...except` 的意义不是“让错误消失”，而是：
+
+> 明确知道某一步可能失败，并规定失败后程序该怎么处理。
+
+## 记忆
 
 ```text
-用户参数错误       → 返回合理错误信息
-请求外部模型超时   → 重试或返回超时信息
-文件不存在         → 提示文件问题
-数据库连接失败     → 记录日志并停止当前请求
+try    → 尝试执行可能失败的代码
+except → 出现指定异常后的处理方案
 ```
 
-所以 `try...except` 在后端和 AI 应用开发里会非常常见。
-
-## 当前阶段记住
-
-```text
-try    → 放可能失败的操作
-except → 指定失败发生后怎么处理
-```
-
-并且优先记住几个常见异常：
-
-```text
-ValueError
-TypeError
-KeyError
-IndexError
-ZeroDivisionError
-FileNotFoundError
-```
+只包住真正可能失败的部分，不要把整个程序全部塞进一个巨大的 `try`。
