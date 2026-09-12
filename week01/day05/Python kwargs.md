@@ -1,17 +1,124 @@
+# Python `**kwargs`
 
-## Python **kwargs 参数介绍[](https://www.pythontutorial.net/python-basics/python-kwargs/#introduction-to-the-python-kwargs-parameters "Anchor for Introduction to the Python **kwargs parameters")
+`**kwargs` 用来接收**数量不固定的关键字参数**。
 
-在 Python 中，[函数](https://www.pythontutorial.net/python-basics/python-functions/)可以有一个参数前缀两个星（**）。例如：`**kwwargs`
+如果 `*args` 负责接住：
 
-这被称为关键词参数。`**kwargs`
+```python
+func(1, 2, 3)
+```
 
-当函数拥有参数时，它可以接受变量数量的关键[词参数](https://www.pythontutorial.net/python-basics/python-keyword-arguments/)作为[词典](https://www.pythontutorial.net/python-basics/python-dictionary/)。`**kwargs`
+那么 `**kwargs` 负责接住：
 
-两个星（）很重要。不过，这个名字是惯例上的。因此，你可以使用其他有意义的名称，如和。`**``kwargs``**configs``**files`
+```python
+func(name="Tom", age=18)
+```
 
-## 摘要[](https://www.pythontutorial.net/python-basics/python-kwargs/#summary "Anchor for Summary")
+## 1. `**kwargs` 在函数内部是字典
 
-- 使用Python参数，允许函数接受可变数量的关键词参数。`**kwargs`
-- 在函数内部，参数是一个字典，包含所有关键词参数作为其名称-值对。`kwargs`
-- 在字典参数前加双星（）以传递参数。`**``**kwargs`
-- 参数总是放在参数列表的末尾，否则会出错。`**kwargs`
+```python
+def show_info(**kwargs):
+    print(kwargs)
+
+show_info(name="Tom", age=18)
+```
+
+输出：
+
+```python
+{"name": "Tom", "age": 18}
+```
+
+所以：
+
+```text
+kwargs 是 dict（字典）
+```
+
+你可以像普通字典一样使用它：
+
+```python
+def show_info(**kwargs):
+    for key, value in kwargs.items():
+        print(key, value)
+```
+
+## 2. 为什么要用它
+
+有些函数允许调用者传很多可选配置，而且参数数量不固定：
+
+```python
+def create_user(name, **kwargs):
+    print("name:", name)
+    print("other:", kwargs)
+
+create_user(name="Tom", age=18, city="Beijing")
+```
+
+此时：
+
+```text
+name = "Tom"
+kwargs = {"age": 18, "city": "Beijing"}
+```
+
+## 3. `**` 也可以在调用函数时解包字典
+
+```python
+def introduce(name, age):
+    print(name, age)
+
+user = {
+    "name": "Tom",
+    "age": 18
+}
+
+introduce(**user)
+```
+
+相当于：
+
+```python
+introduce(name="Tom", age=18)
+```
+
+所以同样要区分：
+
+```text
+定义函数：**kwargs  → 收集多个关键字参数
+调用函数：**some_dict → 把字典拆成关键字参数
+```
+
+## 4. 和 `*args` 放在一起
+
+常见形式：
+
+```python
+def func(a, *args, **kwargs):
+    print(a)
+    print(args)
+    print(kwargs)
+```
+
+调用：
+
+```python
+func(1, 2, 3, name="Tom", age=18)
+```
+
+得到：
+
+```text
+a = 1
+args = (2, 3)
+kwargs = {"name": "Tom", "age": 18}
+```
+
+## 当前阶段记住
+
+```text
+*args   → 多出来的位置参数 → tuple
+**kwargs → 多出来的关键字参数 → dict
+```
+
+`args` 和 `kwargs` 只是惯用名字，真正决定行为的是 `*` 和 `**`。
