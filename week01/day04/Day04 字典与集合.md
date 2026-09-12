@@ -1,292 +1,472 @@
 # Day04｜字典、集合与循环 else
 
-这一天的重点是字典与集合。前者适合按“键 → 值”组织数据，后者适合去重、成员判断和集合关系运算；同时补充 `for...else` 与 `while...else`。
+这一天真正要建立的不是“记住一堆方法名”，而是先弄清楚：**不同容器为什么存在、它们各自在解决什么问题。**
 
-## 1. 字典 dict
+如果只背 `items()`、`intersection()`、`issubset()`，很容易出现“看得懂，自己写时不知道该拿谁出来用”的情况。
 
-字典保存的是 **键值对（key-value pairs）**：
+## 1. 先分清 list / dict / set
+
+| 类型 | 典型写法 | 最适合干什么 | 常见添加方式 |
+| --- | --- | --- | --- |
+| 列表 `list` | `[10, 20, 30]` | 保存一串有顺序的数据 | `append()` |
+| 字典 `dict` | `{"Tom": 78}` | 保存“键 → 值”的对应关系 | `d[key] = value` |
+| 集合 `set` | `{"Python", "Git"}` | 去重、成员判断、集合关系 | `add()` |
+
+最容易混的三个动作：
 
 ```python
-person = {
-    "name": "Tom",
-    "age": 18,
-    "active": True
+nums.append(10)          # list
+scores["Tom"] = 78      # dict
+skills.add("Python")     # set
+```
+
+空容器也要分清：
+
+```python
+[]      # 空列表
+{}      # 空字典
+set()   # 空集合
+```
+
+---
+
+## 2. 字典 dict 到底在干什么
+
+字典保存的是 **键值对（key-value pairs）**。
+
+```python
+scores = {
+    "Tom": 78,
+    "Alice": 95,
+    "Bob": 42
 }
 ```
+
+可以把它理解成一张“名字 → 成绩”的查找表：
+
+```text
+Tom    → 78
+Alice  → 95
+Bob    → 42
+```
+
+所以：
+
+```python
+scores["Alice"]
+```
+
+得到：
+
+```python
+95
+```
+
+如果变量里已经装着键：
+
+```python
+name = "Alice"
+scores[name]
+```
+
+和 `scores["Alice"]` 是同一件事。
 
 ### 读取值
 
 ```python
-person["name"]
-person.get("name")
+scores["Alice"]
+scores.get("Alice")
 ```
 
 区别：
-- `person["xxx"]`：键不存在会抛出 `KeyError`。
-- `person.get("xxx")`：键不存在默认返回 `None`。
-- `person.get("xxx", default)`：可以指定默认值。
 
-### 新增 / 修改
+- `scores["xxx"]`：键不存在会抛出 `KeyError`。
+- `scores.get("xxx")`：键不存在默认返回 `None`。
+- `scores.get("xxx", -1)`：键不存在时可以返回指定默认值。
 
-```python
-person["city"] = "Beijing"   # 新增
-person["age"] = 19            # 修改
-```
+### 新增和修改
 
-### 删除
+字典不用 `append()`。
 
 ```python
-del person["age"]
+scores["Jerry"] = 66    # 新增
+scores["Tom"] = 80      # 修改
 ```
 
-### 遍历
+核心记法：
+
+```text
+字典[键] = 值
+```
+
+### 判断键是否存在
 
 ```python
-for key in person:
-    print(key)
-
-for value in person.values():
-    print(value)
-
-for key, value in person.items():
-    print(key, value)
+if "Tom" in scores:
+    ...
 ```
 
-`items()` 产生的是 `(key, value)` 形式的数据，因此可以直接解包。
+对字典直接使用 `in`，默认检查的是 **key（键）**。
 
-Python 里通常把 `dictionary` 译作“字典”，`key` 译作“键”。
+---
+
+## 3. 遍历字典时到底拿到了什么
+
+### 只遍历字典本身
+
+```python
+for x in scores:
+    print(x)
+```
+
+得到的是键：
+
+```text
+Tom
+Alice
+Bob
+```
+
+所以：
+
+```python
+for score in scores:
+```
+
+这里变量虽然叫 `score`，但实际拿到的仍然是名字。**变量名不会改变数据本身是什么。**
+
+### 同时拿到键和值
+
+```python
+for name, score in scores.items():
+    print(name, score)
+```
+
+第一轮相当于：
+
+```text
+name = "Tom"
+score = 78
+```
+
+`items()` 给出的是 `(key, value)`，这里又用到了之前学过的 **解包（unpacking）**。
+
+### 只拿值
+
+```python
+for score in scores.values():
+    print(score)
+```
+
+常见选择：
+
+```text
+只要 key       → for key in d
+只要 value     → for value in d.values()
+key 和 value   → for key, value in d.items()
+```
 
 关联：[[Python 词典]]
 
-## 2. 字典推导式 dictionary comprehension
+---
 
-基本形式：
+## 4. 字典计数模式
 
-```python
-{key_expr: value_expr for item in iterable if condition}
-```
-
-例如：
+这是非常常见的一类代码：
 
 ```python
-scores = {"Tom": 78, "Alice": 95, "Bob": 42}
-passed = {name: score for name, score in scores.items() if score >= 60}
+words = ["python", "java", "python"]
+counts = {}
+
+for word in words:
+    if word not in counts:
+        counts[word] = 1
+    else:
+        counts[word] += 1
 ```
 
-结果：
+思路不是“背代码”，而是：
+
+```text
+第一次见到这个单词 → 创建 key，初始值 1
+以前见过           → 原来的次数 +1
+```
+
+这类结构以后会出现在计数、统计、分组、缓存等很多场景里。
+
+---
+
+## 5. 不要边遍历字典边改变它的大小
+
+这种写法容易报错：
 
 ```python
-{"Tom": 78, "Alice": 95}
+for name, score in scores.items():
+    if score < 60:
+        del scores[name]
 ```
 
-和列表推导式一样，先确保普通 `for` 写法会写，再使用推导式简化。
+因为循环正在依赖字典当前的结构，你同时又在删除元素。
+
+当前阶段更稳妥的思路是构造新结果：
+
+```python
+passed = {}
+
+for name, score in scores.items():
+    if score >= 60:
+        passed[name] = score
+```
+
+然后：
+
+```python
+return passed
+```
+
+写函数结束前顺手问自己一句：
+
+> 我真正构造出的结果变量是谁？`return` 的是不是它？
+
+---
+
+## 6. 字典推导式 dictionary comprehension
+
+普通写法：
+
+```python
+passed = {}
+for name, score in scores.items():
+    if score >= 60:
+        passed[name] = score
+```
+
+推导式写法：
+
+```python
+passed = {
+    name: score
+    for name, score in scores.items()
+    if score >= 60
+}
+```
+
+当前阶段优先把普通 `for` 写熟，再把它压缩成推导式。
 
 关联：[[Python 词典理解]]
 
-## 3. 集合 set
+---
 
-集合特点：
+## 7. 集合 set 到底在干什么
+
+集合不是“另一种列表”。它最主要的特点是：
+
 - 元素不重复。
-- 没有可依赖的固定位置，不通过下标访问。
-- 集合本身是可变的，可以 `add()` / `remove()`。
-- 放进集合的元素必须是可哈希的，例如数字、字符串、元组通常可以；列表、字典不能直接作为集合元素。
+- 不依赖下标位置。
+- 很适合判断“有没有”。
+- 很适合处理“两组东西之间是什么关系”。
+
+例如两个程序员会的技能：
 
 ```python
-skills = {"Python", "Git", "SQL"}
+a = {"Python", "Git", "SQL", "Docker"}
+b = {"Python", "Git", "Java"}
 ```
 
-空集合一定要写：
+这时候集合比列表更自然，因为我们关心的是：
 
-```python
-empty = set()
-```
-
-`{}` 是空字典，不是空集合。
-
-### 常用操作
-
-```python
-skills.add("Docker")
-skills.remove("Git")     # 不存在会 KeyError
-skills.discard("Java")   # 不存在也不会报错
-"Python" in skills
-len(skills)
+```text
+共同会什么？
+一共会什么？
+A 会但 B 不会什么？
+只有其中一方会什么？
 ```
 
 关联：[[Python 集合]]
 
-## 4. 集合推导式 set comprehension
+---
 
-基本形式：
+## 8. 四个集合运算不要只背名字
 
-```python
-{expression for item in iterable if condition}
-```
+### 交集 intersection
 
-例如得到 1～10 中偶数的平方：
-
-```python
-result = {x ** 2 for x in range(1, 11) if x % 2 == 0}
-```
-
-关联：[[Python 集合理解]]
-
-## 5. 并集 union
-
-取两个集合中出现过的所有元素：
-
-```python
-a | b
-a.union(b)
-```
-
-示例：
-
-```python
-{1, 2, 3} | {3, 4, 5}
-# {1, 2, 3, 4, 5}
-```
-
-关联：[[Python集合合并]]
-
-## 6. 交集 intersection
-
-只保留两个集合共同拥有的元素：
+“双方都有”：
 
 ```python
 a & b
 a.intersection(b)
 ```
 
+结果：
+
 ```python
-{1, 2, 3} & {2, 3, 4}
-# {2, 3}
+{"Python", "Git"}
 ```
 
-关联：[[Python 集交集]]
+### 并集 union
 
-## 7. 差集 difference
+“双方加起来一共有”：
 
-`a - b` 表示：属于 `a`，但不属于 `b` 的元素。
+```python
+a | b
+a.union(b)
+```
+
+### 差集 difference
+
+“A 有，B 没有”：
 
 ```python
 a - b
-a.difference(b)
 ```
 
-注意差集有方向：
+差集有方向：
 
 ```python
 a - b != b - a
 ```
 
-关联：[[Python集合差集]]
+### 对称差 symmetric difference
 
-## 8. 对称差 symmetric difference
-
-只保留“只出现在其中一个集合”的元素，共同元素被排除：
+“只属于其中一方，共同拥有的不要”：
 
 ```python
 a ^ b
-a.symmetric_difference(b)
 ```
 
-关联：[[Python 对称差分]]
+可以这样记：
 
-## 9. 子集 issubset()
+```text
+&  共同的
+|  合起来
+-  我有你没有
+^  两边独有
+```
 
-如果 `a` 的所有元素都包含在 `b` 中：
+关联：[[Python 集交集]] · [[Python集合合并]] · [[Python集合差集]] · [[Python 对称差分]]
+
+---
+
+## 9. 子集、超集、不相交到底是什么意思
+
+假设：
 
 ```python
-a.issubset(b)
-# 或
-a <= b
+user_permissions = {"read", "write", "delete"}
+required = {"read", "write"}
 ```
 
-例如：
+用户是否拥有所有必需权限？
+
+可以从两个方向说同一件事：
 
 ```python
-{1, 2}.issubset({1, 2, 3})   # True
+user_permissions.issuperset(required)
+required.issubset(user_permissions)
 ```
 
-关联：[[Python issubset]]
+翻成人话：
 
-## 10. 超集 issuperset()
-
-如果 `a` 包含 `b` 的全部元素：
-
-```python
-a.issuperset(b)
-# 或
-a >= b
+```text
+用户权限是必需权限的超集
+必需权限是用户权限的子集
 ```
 
-关联：[[Python issuperset]]
-
-## 11. 不相交 isdisjoint()
-
-如果两个集合没有任何共同元素：
+如果想判断两个集合完全没有共同元素：
 
 ```python
 a.isdisjoint(b)
 ```
 
-例如：
+关联：[[Python issubset]] · [[Python issuperset]] · [[Python 不相交集]]
 
-```python
-{1, 2}.isdisjoint({3, 4})  # True
-```
+---
 
-关联：[[Python 不相交集]]
+## 10. for...else 到底在干什么
 
-## 12. for...else
-
-`else` 不是“if 的 else”，而是属于 `for` 循环。
+它不是 `if...else` 的变种。
 
 ```python
 for item in items:
     if condition:
         break
 else:
-    print("循环没有被 break 打断")
+    print("循环完整跑完，没有被 break 打断")
 ```
 
 核心规则：
-- 循环正常结束：执行 `else`。
-- 遇到 `break` 提前退出：不执行 `else`。
-- 空可迭代对象也属于“正常结束”，因此会执行 `else`。
 
-典型用途：查找一个元素，找到了就 `break`；整个循环都没找到，再进入 `else`。
+```text
+循环正常结束       → 执行 else
+break 提前结束     → 不执行 else
+```
+
+最适合的场景是“搜索”：
+
+```python
+for num in nums:
+    if num % 2 == 0:
+        print("找到了")
+        break
+else:
+    print("一个偶数都没有")
+```
+
+如果函数里找到结果后直接 `return`，函数本身已经结束，也不会再进入后面的 `else`：
+
+```python
+def find_even(nums):
+    for num in nums:
+        if num % 2 == 0:
+            return num
+    else:
+        return None
+```
 
 关联：[[Python for…else]]
 
-## 13. while...else
+---
 
-规则和 `for...else` 一样：
+## 11. while...else
 
-```python
-while condition:
-    if something:
-        break
-else:
-    print("while 正常结束，没有 break")
+逻辑和 `for...else` 一致：
+
+```text
+条件自然变成 False → 执行 else
+遇到 break          → 跳过 else
 ```
-
-- 条件变为 `False`，循环正常结束：执行 `else`。
-- `break`：跳过 `else`。
 
 关联：[[Python while else]]
 
-## 14. Day04 重点
+---
 
-优先做到：
+## 12. 今天最值得反复看的几句话
 
-1. 能独立创建、读取、修改、遍历字典。
-2. 能使用 `items()` 写 `for key, value in dict.items()`。
-3. 知道集合最核心价值是 **去重 + 成员判断 + 集合运算**。
-4. 能分清 `union / intersection / difference / symmetric_difference`。
-5. 知道 `issubset / issuperset / isdisjoint` 在判断什么。
-6. 能解释 `for...else` 为什么只有“没有 break”时才执行 `else`。
+```text
+列表：一串数据
+字典：key → value
+集合：一组不重复元素，以及它们之间的关系
+```
 
-> [!tip] 和前几天知识的连接
-> 字典遍历用到了 [[Python 中解包列表|解包]]；字典/集合推导式沿用了 [[Python 列表解析|列表推导式]] 的思路；集合去重可以和之前的 `remove_duplicates()` 练习对照。
+```text
+list  添加：append()
+set   添加：add()
+dict  添加：d[key] = value
+```
+
+```text
+for x in dict              → x 是 key
+for x in dict.values()     → x 是 value
+for k, v in dict.items()   → 同时拿 key 和 value
+```
+
+```text
+return 会结束整个函数，不只是结束一轮循环
+```
+
+```text
+写完函数最后检查：我 return 的是不是我真正算出来的结果？
+```
+
+> [!tip]
+> 这一章如果觉得“每个方法单看都懂，一做题就不知道为什么要用”，先别继续堆方法。先把 **容器的用途、数据流向、遍历时拿到什么** 搞明白，后面的语法会顺很多。
