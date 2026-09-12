@@ -218,7 +218,7 @@ while True:
         break
 ```
 
-关联：[[Python do…while Loop Statement Emulation]]
+关联：[[Python do…while 模拟]]
 
 ### `partial`
 
