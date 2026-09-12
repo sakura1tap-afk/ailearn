@@ -18,34 +18,46 @@ flowchart TD
     E --> F[break / continue / pass]
 
     D --> G[函数与参数]
-    G --> H[lambda]
-    G --> I[递归]
+    G --> H[默认参数 / 关键字参数]
+    H --> I[*args / **kwargs]
+    I --> J[参数解包]
+    G --> K[lambda]
+    G --> L[递归]
+    G --> M[类型提示]
 
-    B --> J[列表]
-    J --> K[元组]
-    J --> L[切片 / 查找 / 解包]
-    E --> M[for 遍历 / enumerate]
-    L --> M
-    M --> N[可迭代对象 / 迭代器]
+    B --> N[列表]
+    N --> O[元组]
+    N --> P[切片 / 查找 / 解包]
+    E --> Q[for 遍历 / enumerate]
+    P --> Q
+    Q --> R[可迭代对象 / 迭代器]
 
-    H --> O[sort / sorted]
-    J --> O
-    H --> P[map / filter]
-    N --> P
-    P --> Q[reduce]
-    M --> R[列表推导式]
+    K --> S[sort / sorted]
+    N --> S
+    K --> T[map / filter]
+    R --> T
+    T --> U[reduce]
+    Q --> V[列表推导式]
 
-    J --> S[字典]
-    R --> T[字典推导式]
-    S --> T
+    N --> W[字典]
+    V --> X[字典推导式]
+    W --> X
 
-    J --> U[集合]
-    R --> V[集合推导式]
-    U --> V
-    U --> W[并集 / 交集 / 差集 / 对称差]
-    W --> X[subset / superset / disjoint]
+    N --> Y[集合]
+    V --> Z[集合推导式]
+    Y --> Z
+    Y --> AA[并集 / 交集 / 差集 / 对称差]
+    AA --> AB[subset / superset / disjoint]
 
-    E --> Y[for...else / while...else]
+    E --> AC[for...else / while...else]
+
+    G --> AD[异常处理]
+    AD --> AE[try / except / finally]
+
+    G --> AF[模块]
+    AF --> AG[包]
+    AF --> AH[模块搜索路径]
+    AF --> AI[内部函数约定]
 ```
 
 ## 1. 基础值与条件
@@ -56,13 +68,24 @@ flowchart TD
 
 [[Python范围循环|for + range]]、[[Python while|while]] → [[Python break|break]] / [[Python continue|continue]] / [[Python pass|pass]]
 
-在理解 `break` 后，再学习 [[Python for…else|for...else]] 和 [[Python while else|while...else]] 会更自然。
+理解 `break` 后，再学习 [[Python for…else|for...else]] 和 [[Python while else|while...else]] 会更自然。
 
-## 3. 函数
+## 3. 函数与参数
 
-[[Python 函数|函数]] → [[Python 默认参数|默认参数]] → [[Python 关键词参数|关键字参数]] → [[Python Lambda表达式|lambda]]
+[[Python 函数|函数]] → [[Python 默认参数|默认参数]] → [[Python 关键词参数|关键字参数]]
 
-分支知识：[[Python 递归函数|递归函数]]。
+继续向下：
+
+```text
+固定数量参数
+→ 不固定位置参数 *args
+→ 不固定关键字参数 **kwargs
+→ 调用时使用 * / ** 解包
+```
+
+关联：[[week01/day05/Python args|*args]]、[[week01/day05/Python kwargs|**kwargs]]、[[week01/day05/Python 解包元组|解包]]。
+
+分支知识：[[Python Lambda表达式|lambda]]、[[Python 递归函数|递归函数]]、[[week01/day05/Python 类型提示|类型提示]]。
 
 ## 4. 列表与序列
 
@@ -80,19 +103,17 @@ flowchart TD
 
 | 目标 | 工具 | 重点 |
 | --- | --- | --- |
-| 原地排序列表 | [[Python 排序列表|list.sort()]] | 修改原列表，返回 None |
+| 原地排序列表 | [[Python 排序列表|list.sort()]] | 修改原列表，返回 `None` |
 | 得到新排序结果 | [[Python sorted|sorted()]] | 返回新列表 |
 | 转换每个元素 | [[Python map（） 函数转换列表元素|map()]] | `map(fn, iterable)` |
 | 按条件筛选 | [[Python中筛选列表元素|filter()]] | `filter(fn, iterable)` |
-| 多值归约成一个值 | [[Python的reduce（） 函数将列表简化为单一值|reduce()]] | 来自 functools |
+| 多值归约成一个值 | [[Python的reduce（） 函数将列表简化为单一值|reduce()]] | 来自 `functools` |
 
 Day03 主线：[[week01/day03/Day03 列表与迭代|Day03 列表与迭代]]。
 
 ## 6. 字典
 
 [[Python 词典|字典]] 的核心是 `key -> value`。
-
-常用能力：
 
 ```text
 读取 / get()
@@ -107,7 +128,7 @@ Day03 主线：[[week01/day03/Day03 列表与迭代|Day03 列表与迭代]]。
 
 ## 7. 集合
 
-[[Python 集合|集合]] 的核心价值：**去重、快速成员判断、集合关系运算**。
+[[Python 集合|集合]] 的核心价值：**去重、成员判断、集合关系运算**。
 
 ```text
 set
@@ -120,23 +141,71 @@ set
 └── isdisjoint 不相交
 ```
 
-关联：[[Python集合合并]]、[[Python 集交集]]、[[Python集合差集]]、[[Python 对称差分]]、[[Python issubset]]、[[Python issuperset]]、[[Python 不相交集]]。
-
 Day04 主线：[[week01/day04/Day04 字典与集合|Day04 字典与集合]]。
 
-## 8. 当前最需要形成的能力
+## 8. 异常处理
 
-你的目标不是一次记住全部方法，而是把知识变成几个稳定模式：
+程序不仅会有“代码写错”，还会遇到运行时失败：
 
 ```text
-遍历数据 → for
-筛选数据 → if / filter / 推导式
-转换数据 → 表达式 / map
-排序数据 → sort / sorted
-累计结果 → 累加器 / reduce
-按键保存数据 → dict
-去重与集合关系 → set
-查找失败后做兜底 → for...else
+输入格式错误
+文件不存在
+除以 0
+API 请求失败
+JSON 解析失败
+```
+
+对应主线：
+
+```text
+try
+→ except 捕获指定异常
+→ finally 做清理动作
+```
+
+关联：[[week01/day05/Python try…except|try...except]]、[[week01/day05/Python try…except…finally|finally]]。
+
+## 9. 模块与包
+
+代码变多以后，需要从“会写函数”进入“会组织代码”：
+
+```text
+一个 .py 文件
+→ module 模块
+
+多个相关模块放入目录
+→ package 包
+```
+
+继续关联：
+
+```text
+import 找模块
+→ sys.path 模块搜索路径
+
+_函数名
+→ 表示内部实现的约定
+```
+
+Day05 主线：[[week01/day05/Day05 函数参数、异常与模块|Day05 函数参数、异常与模块]]。
+
+## 10. 当前最需要形成的能力
+
+不要一次记住全部方法，而是把问题映射到稳定模式：
+
+```text
+遍历数据           → for
+筛选数据           → if / filter / 推导式
+转换数据           → 表达式 / map
+排序数据           → sort / sorted
+累计结果           → 累加器 / reduce
+按键保存数据       → dict
+去重与集合关系     → set
+不固定位置参数     → *args
+不固定关键字参数   → **kwargs
+运行时失败处理     → try / except
+拆分代码文件       → module / package
+说明输入输出类型   → type hints
 ```
 
 真正的检验方式仍然是 [[02 易混概念与练习复盘]] + 手写代码。
