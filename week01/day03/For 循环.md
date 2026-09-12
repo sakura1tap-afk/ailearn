@@ -77,7 +77,7 @@ for index, city in enumerate(cities):
 
 ## 知识链与自查
 
-- **学完可接着看**：[[Python 迭代|Python 可迭代对象与迭代器]]、[[Python Lambda表达式|Python lambda 表达式]]、[[今日练习|Day02 今日练习与错题复盘]]。
+- **学完可接着看**：[[Python 迭代|Python 可迭代对象与迭代器]]、[[Python Lambda表达式|Python lambda 表达式]]、[[week01/day03/今日练习|Day02 今日练习与错题复盘]]。
 - **按顺序复习 · 上一篇**：[[Python 列表切片|Python 列表切片]]。
 - **按顺序复习 · 下一篇**：[[查找列表中元素的索引|Python 列表查找与成员判断]]。
 - **自查**：何时只需要 num，何时还需要索引 i？

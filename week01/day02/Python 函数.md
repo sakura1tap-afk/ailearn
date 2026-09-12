@@ -44,7 +44,7 @@ review_order: 20
 
 ## 知识链与自查
 
-- **学完可接着看**：[[Python 默认参数|Python 默认参数]]、[[Python 关键词参数|Python 关键字参数]]、[[Python 函数文档字符串|Python 函数文档字符串]]、[[Python Lambda表达式|Python lambda 表达式]]、[[Python 递归函数|Python 递归函数]]、[[今日练习|Day02 今日练习与错题复盘]]。
+- **学完可接着看**：[[Python 默认参数|Python 默认参数]]、[[Python 关键词参数|Python 关键字参数]]、[[Python 函数文档字符串|Python 函数文档字符串]]、[[Python Lambda表达式|Python lambda 表达式]]、[[Python 递归函数|Python 递归函数]]、[[week01/day02/今日练习|Day02 今日练习与错题复盘]]。
 - **按顺序复习 · 上一篇**：[[Python pass|Python pass]]。
 - **按顺序复习 · 下一篇**：[[Python 默认参数|Python 默认参数]]。
 - **自查**：函数名、传入的参数、返回值分别是什么？

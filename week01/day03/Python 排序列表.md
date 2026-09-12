@@ -98,7 +98,7 @@ print(companies)
 
 ## 知识链与自查
 
-- **学完可接着看**：[[Python sorted|Python sorted 返回新列表]]、[[今日练习|Day02 今日练习与错题复盘]]。
+- **学完可接着看**：[[Python sorted|Python sorted 返回新列表]]、[[week01/day03/今日练习|Day02 今日练习与错题复盘]]。
 - **按顺序复习 · 上一篇**：[[Python Lambda表达式|Python lambda 表达式]]。
 - **按顺序复习 · 下一篇**：[[Python sorted|Python sorted 返回新列表]]。
 - **自查**：`key=sort_key` 与 `key=sort_key()` 有什么区别？
