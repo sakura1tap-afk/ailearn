@@ -1,218 +1,201 @@
-## 语法错误[](https://www.pythontutorial.net/python-basics/python-try-except/#syntax-errors "Anchor for Syntax errors")
+# Python `try...except`
 
-当你写出无效的Python代码时，会出现语法错误。例如：
+异常处理解决的是一个非常实际的问题：**程序运行时出错了，能不能别直接崩掉，而是自己处理。**
 
-```python
-current = 1
-if current < 10
-current += 1
-```
+## 1. 语法错误和异常不是一回事
 
-如果你尝试运行这段代码，会出现以下错误：
-
-```bash
-File "d:/python/try-except.py", line 2
-    if current < 10
-                  ^
-SyntaxError: invalid syntax
-```
-
-在这个例子中，Python 解释器在 [`if` 语句](https://www.pythontutorial.net/python-basics/python-if/)后面缺少冒号（）时检测到了错误。`:`
-
-Python解释器会显示出错误发生位置的文件名和行号，方便你修复。
-
-## 例外情况[](https://www.pythontutorial.net/python-basics/python-try-except/#exceptions "Anchor for Exceptions")
-
-即使你的代码语法有效，执行时也可能出现错误。
-
-在 Python 中，执行过程中发生的错误称为**异常**。异常的原因主要来自代码执行的环境。例如：
-
-- [读取](https://www.pythontutorial.net/python-basics/python-read-text-file/)一个不[存在](https://www.pythontutorial.net/python-basics/python-check-if-file-exists/)的文件。
-- 连接到离线的远程服务器。
-- 糟糕的用户输入。
-
-当异常发生时，程序不会自动处理。这会导致错误信息。
-
-例如，以下程序计算销售增长：
+语法错误：代码本身写得不合法。
 
 ```python
-# get input net sales
-print('Enter the net sales for')
-
-previous = float(input('- Prior period:'))
-current = float(input('- Current period:'))
-
-# calculate the change in percentage
-change = (current - previous) * 100 / previous
-
-# show the result
-if change > 0:
-    result = f'Sales increase {abs(change)}%'
-else:
-    result = f'Sales decrease {abs(change)}%'
-
-print(result)
+if x > 10
+    print(x)
 ```
 
-它是如何运作的。
+这里缺少 `:`，程序甚至不能正常开始执行。
 
-- 首先，提示用户输入两个数字：前一期和当前期的净销售额。
-- 然后，计算销售增长的百分比并展示结果。
+异常（exception）：代码语法没问题，但运行过程中出了问题。
 
-当你运行程序并输入为当前期间的净销售额时，Python 解释器会输出以下结果：`120'`
-
-```bash
-Enter the net sales for
-- Prior period:100
-- Current period:120'
-Traceback (most recent call last):
-  File "d:/python/try-except.py", line 5, in <module>
-    current = float(input('- Current period:'))
-ValueError: could not convert string to float: "120'"
+```python
+int("abc")
 ```
 
-Python 解释器显示了一个包含异常详细信息的追溯：
+这会产生：
 
-- 指向导致异常的源代码文件（）的路径。`d:/python/try-except.py`
-- 导致异常的那行代码 （`line 5`)
-- 导致该异常的陈述`current = float(input('- Current period:'))`
-- 例外类型`ValueError`
-- 错误提示：`ValueError: could not convert string to float: "120'"`
+```text
+ValueError
+```
 
-由于无法将字符串转换为数字，Python 解释器发出了异常。`float()``120'``ValueError`
+再比如：
 
-在 Python 中，异常有不同类型，如 、 、 等。`TypeError``NameError`
+```python
+10 / 0
+```
 
-## 处理异常[](https://www.pythontutorial.net/python-basics/python-try-except/#handling-exceptions "Anchor for Handling exceptions")
+会产生：
 
-为了让程序更稳健，你需要在异常发生后处理它。换句话说，你需要发现异常并通知用户，以便他们修复。
+```text
+ZeroDivisionError
+```
 
-处理这个问题的一个好方法是不展示 Python 解释器返回的内容。相反，你会用更易用的错误信息替换那个错误信息。
+## 2. `try...except` 在干什么
 
-为此，您可以使用Python语句：`try...except`
+基本结构：
 
 ```python
 try:
-    # code that may cause error
-except:
-    # handle errors
-```
-该声明的运作方式如下：`try...except`
-
-- 该条款中的语句先执行。`try`
-- 如果没有例外，则跳过该子句，完成语句的执行。`except``try`
-- 如果在子句中的任何语句发生异常，则**跳过剩余的子句**，执行该子句。`try``except`
-
-以程图展示了该陈述：`try...except`
-
-![Python try...except](https://www.pythontutorial.net/wp-content/uploads/2020/10/Python-try-except.png)
-
-所以，要用语句处理异常，你要把可能引发异常的代码放在子句里，把处理异常的代码放在子句里。`try...except``try``except`
-
-```python
-except:
-    print('Error! Please enter a number for net sales.')
-```
-
-如果你再次运行程序并输入净销售额（不是数字），程序会发出你在区块中指定的消息：`except`
-
-```bash
-Enter the net sales for
-- Prior period:100
-- Current period:120'
-Error! Please enter a number for net sales.
-```
-
-## 捕捉特定例外[](https://www.pythontutorial.net/python-basics/python-try-except/#catching-specific-exceptions "Anchor for Catching specific exceptions")
-
-当你将上一期的净销售额输入为零时，你会看到以下提示：
-
-```bash
-Enter the net sales for
-- Prior period:0
-- Current period:100
-Error! Please enter a number for net sales.
-```
-
-在这种情况下，前一期和当前期的净销售额都是数字，但程序仍然会发出错误信息。必须有另一个例外。
-
-该语句允许你处理特定的异常。要捕捉选中的异常，你需要在关键词后方放置异常类型：`try...except``except`
-
-```python
-try:
-    # code that may cause an exception
-except ValueError as error:
-    # code to handle the exception
+    # 可能出错的代码
+except SomeError:
+    # 出现指定异常时怎么处理
 ```
 
 例如：
 
 ```python
 try:
-    # get input net sales
-    print('Enter the net sales for')
-
-    previous = float(input('- Prior period:'))
-    current = float(input('- Current period:'))
-
-    # calculate the change in percentage
-    change = (current - previous) * 100 / previous
-
-    # show the result
-    if change > 0:
-        result = f'Sales increase {abs(change)}%'
-    else:
-        result = f'Sales decrease {abs(change)}%'
-
-    print(result)
+    age = int(input("请输入年龄："))
 except ValueError:
-    print('Error! Please enter a number for net sales.')
+    print("请输入数字")
 ```
 
-当你运行程序并输入净销售的字符串时，也会收到同样的错误信息。
+如果输入：
 
-但是，如果你将上一期的净销售额输入零：
-
-```bash
-Enter the net sales for
-- Prior period:0
-- Current period:100
+```text
+18
 ```
 
-…你会收到以下错误信息：
+正常执行。
 
-```bash
-Traceback (most recent call last):
-  File "d:/python/try-except.py", line 9, in <module>
-    change = (current - previous) * 100 / previous
-ZeroDivisionError: float division by zero
+如果输入：
+
+```text
+abc
 ```
 
-这次你得到了例外。除以零例外的原因是以下陈述：`ZeroDivisionError`
+`int("abc")` 会产生 `ValueError`，程序进入 `except ValueError:`，而不是直接崩掉。
 
-```python
-change = (current - previous) * 100 / previous
+## 3. 执行顺序
+
+```text
+进入 try
+↓
+正常执行
+├─ 没异常 → except 跳过
+└─ 出异常 → try 剩余代码停止 → 去找匹配的 except
 ```
 
-原因是 的值为零。`previous`
-
-## 处理多重异常[](https://www.pythontutorial.net/python-basics/python-try-except/#handling-multiple-exceptions "Anchor for Handling multiple exceptions")
-
-通过指定多个子句，允许你处理多个例外：`try...except``except`
+例如：
 
 ```python
 try:
-    # code that may cause an exception
-except Exception1 as e1:
-    # handle exception
-except Exception2 as e2:
-    # handle exception
-except Exception3 as e3:
-    # handle exception 
+    print("A")
+    num = int("abc")
+    print("B")
+except ValueError:
+    print("C")
 ```
 
-## 摘要[](https://www.pythontutorial.net/python-basics/python-try-except/#summary "Anchor for Summary")
+输出：
 
-- 用Python语句优雅地处理异常。`try...except`
-- 尽量在块中设置具体例外。`except`
-- 利用该语句来捕捉其他异常情况。`except Exception`
+```text
+A
+C
+```
+
+`B` 不会执行，因为异常出现后，`try` 中后面的代码被跳过。
+
+## 4. 尽量捕获具体异常
+
+不推荐一上来就写：
+
+```python
+try:
+    ...
+except:
+    print("出错了")
+```
+
+因为这样会把很多不同问题混在一起。
+
+更清楚的是：
+
+```python
+try:
+    previous = float(input("上一期销售额："))
+    current = float(input("当前销售额："))
+    change = (current - previous) / previous
+except ValueError:
+    print("请输入数字")
+except ZeroDivisionError:
+    print("上一期销售额不能为 0")
+```
+
+两个异常代表两个完全不同的问题。
+
+## 5. `as e` 是什么
+
+可以把异常对象保存到变量里：
+
+```python
+try:
+    num = int("abc")
+except ValueError as e:
+    print(e)
+```
+
+`e` 里面包含这次异常的具体信息。
+
+## 6. `Exception` 什么时候用
+
+有时程序边界处确实需要兜底：
+
+```python
+try:
+    ...
+except Exception as e:
+    print("发生异常：", e)
+```
+
+但学习和业务代码中，**能明确知道异常类型时优先捕获具体异常**。
+
+否则很容易把真正的 bug 也一起吞掉。
+
+## 7. 异常处理不是“让错误消失”
+
+它的真正作用是：
+
+```text
+预料某些运行时失败
+↓
+识别是什么问题
+↓
+决定程序接下来怎么办
+```
+
+例如未来做 API 时：
+
+```text
+用户参数错误       → 返回合理错误信息
+请求外部模型超时   → 重试或返回超时信息
+文件不存在         → 提示文件问题
+数据库连接失败     → 记录日志并停止当前请求
+```
+
+所以 `try...except` 在后端和 AI 应用开发里会非常常见。
+
+## 当前阶段记住
+
+```text
+try    → 放可能失败的操作
+except → 指定失败发生后怎么处理
+```
+
+并且优先记住几个常见异常：
+
+```text
+ValueError
+TypeError
+KeyError
+IndexError
+ZeroDivisionError
+FileNotFoundError
+```
