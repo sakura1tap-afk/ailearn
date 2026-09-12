@@ -1,69 +1,103 @@
-**总结**：在本教程中，你将学习如何使用变量在模块中定义 Python 私有函数。`__all__`
+# Python 私有函数约定
 
-假设你有一个称为 的[模](https://www.pythontutorial.net/python-basics/python-module/)，包含两个[函数](https://www.pythontutorial.net/python-basics/python-functions/) 和 。`mail.py``send()``attach_file()`
+Python 没有像某些语言那样严格的 `private` 函数机制。
 
-```python
-def send(email, message):
-    print(f'Sending "{message}" to {email}')
+实际开发中，通常用**下划线前缀**表示：
 
-def attach_file(filename):
-    print(f'Attach {filename} to the message')
-   
-```
+> 这个函数是模块内部使用的，不建议外部直接调用。
 
-你只想把函数暴露给其他模块，而不是函数本身。换句话说，你希望函数是私有的，不能从邮件模块外部访问。`send()``attach_file()``attach_file()`
-
-注意，为了简化，我们只打印部分文本。
-
-如果其他模块使用这样的语句：`import *`
-
-```python
-from mail import *
-```
-
-你可以在函数名前加上下划线（）来实现私密。例如：`_`
+例如：
 
 ```python
 def send(email, message):
-    print(f'Sending "{message}" to {email}')
+    print(f"send to {email}: {message}")
+
 
 def _attach_file(filename):
-    print(f'Attach {filename} to the message')
+    print(f"attach: {filename}")
 ```
-从文件中，你可以使用该模块，只看到函数：`mail.py``import * from mail``send()`
+
+这里：
+
+```text
+send()         → 对外使用的函数
+_attach_file() → 内部辅助函数
+```
+
+## 下划线不是强制权限
+
+即使函数名以 `_` 开头，其他模块仍然可以显式访问：
+
+```python
+import mail
+
+mail._attach_file("a.txt")
+```
+
+Python 不会阻止你这么做。
+
+所以 `_name` 更准确的含义是：
+
+> 这是内部实现细节，请不要依赖它。
+
+这是一种约定，不是真正的访问控制。
+
+## `__all__`
+
+模块可以定义：
+
+```python
+__all__ = ["send"]
+```
+
+它主要影响：
 
 ```python
 from mail import *
-
-
-send('test@example.com','Hello')
 ```
 
-换句话说，你无法从模块中访问该函数。如果你尝试调用该函数，会收到错误。`_attach_file()``main``_attach_file()`
+哪些名字会被导入。
 
-另一种让函数私有化的方法是使用变量。这样，你不需要在函数名前加上下划线（_）来实现私有。`attach_file()``__all__`
-
-以下方法是利用模块中的变量使函数为公函数，使函数为私有：`__all__``mail``send()``attach_file()`
+例如：
 
 ```python
-# mail.py
+__all__ = ["send"]
 
-__all__ = ['send']
 
-def send(email, message):
-    print(f'Sending "{message}" to {email}')
+def send():
+    ...
 
-def attach_file(filename):
-    print(f'Attach {filename} to the message')
-   
+
+def attach_file():
+    ...
 ```
 
-从模块中，你也无法像之前那样访问该函数：`main.py``attach_file()`
+使用：
 
-## 摘要[](https://www.pythontutorial.net/python-basics/python-private-functions/#summary "Anchor for Summary")
+```python
+from mail import *
+```
 
-要在 Python 中将函数设为私有：
+时只会导入 `send`。
 
-- 首先，创建一个包含该文件的包`__init__.py`
-- 其次，不要在变量中指定函数。`__all__`
-- 第三，将模块中的所有符号导入包文件，并仅通过变量暴露公函数。`__init__.py``__all__`
+但这同样**不会让 `attach_file()` 变成真正不可访问的私有函数**。
+
+## 实际项目怎么做
+
+当前阶段记住：
+
+```text
+普通函数名   → 对外可用
+_函数名      → 内部实现，外部尽量别用
+__all__      → 控制 import * 暴露哪些名字
+```
+
+另外，实际开发通常不推荐大量使用：
+
+```python
+from module import *
+```
+
+所以 `__all__` 目前了解即可。
+
+真正重要的是养成 `_helper()` 表示内部辅助函数的阅读习惯。
