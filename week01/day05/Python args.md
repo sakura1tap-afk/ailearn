@@ -1,44 +1,6 @@
 # Python `*args`
 
-`*args` 用来解决一个很实际的问题：**函数参数数量不固定时，怎么接住这些额外的位置参数。**
-
-## 1. 先看普通参数
-
-```python
-def add(x, y):
-    return x + y
-```
-
-这个函数只能正常接收两个位置参数：
-
-```python
-add(1, 2)
-```
-
-如果你希望它还能接受 3 个、4 个、5 个参数，就可以使用 `*args`。
-
-## 2. `*args` 会把额外的位置参数收集成元组
-
-```python
-def add(*args):
-    print(args)
-
-add(1, 2, 3)
-```
-
-输出：
-
-```text
-(1, 2, 3)
-```
-
-所以在函数内部：
-
-```text
-args 是一个 tuple（元组）
-```
-
-可以正常遍历：
+`*args` 用来让函数接收**任意数量的位置参数**。
 
 ```python
 def add(*args):
@@ -46,9 +8,34 @@ def add(*args):
     for num in args:
         total += num
     return total
+
+print(add(1, 2, 3))  # 6
 ```
 
-## 3. 普通参数和 `*args` 可以一起用
+在函数内部，`args` 是一个元组：
+
+```python
+def show(*args):
+    print(type(args))
+    print(args)
+
+show(1, 2, 3)
+# <class 'tuple'>
+# (1, 2, 3)
+```
+
+## 什么时候用
+
+当参数数量不固定时很方便，例如：
+
+```python
+def total_price(*prices):
+    return sum(prices)
+```
+
+调用者可以传 0 个、1 个或多个位置参数。
+
+## 和普通参数一起使用
 
 ```python
 def add(x, y, *args):
@@ -64,7 +51,7 @@ def add(x, y, *args):
 add(10, 20, 30, 40)
 ```
 
-此时：
+其中：
 
 ```text
 x = 10
@@ -72,61 +59,59 @@ y = 20
 args = (30, 40)
 ```
 
-## 4. `*args` 后面的参数通常要用关键字传递
+## `*args` 后面的参数
+
+`*args` 后面的普通参数必须使用关键字传入：
 
 ```python
-def add(x, *args, z):
-    return x + sum(args) + z
+def func(x, *args, mode):
+    print(x, args, mode)
+
+func(1, 2, 3, mode="debug")
 ```
 
-正确调用：
+这里的 `mode` 是**仅限关键字参数（keyword-only argument）**。
+
+## 调用函数时的 `*`
+
+定义函数时：
 
 ```python
-add(10, 20, 30, z=40)
+def func(*args):
 ```
 
-这里 `z` 是 keyword-only argument（仅关键字参数）。
+`*` 表示把多个位置参数**收集**起来。
 
-## 5. `*` 也可以用于调用函数时解包
+调用函数时：
+
+```python
+values = (10, 20)
+func(*values)
+```
+
+`*` 表示把序列**解包**成多个位置参数。
+
+例如：
 
 ```python
 def point(x, y):
     return f"({x}, {y})"
 
-position = (10, 20)
-print(point(*position))
+coords = (3, 5)
+print(point(*coords))
 ```
 
-相当于：
+等价于：
 
 ```python
-point(10, 20)
+point(3, 5)
 ```
 
-所以要区分两个场景：
+## 记忆
 
 ```text
-定义函数：*args     → 收集多个位置参数
-调用函数：*some_data → 把序列拆开传进去
+定义时 *args  → 收集位置参数 → tuple
+调用时 *data  → 解包序列     → 多个位置参数
 ```
 
-## 6. 什么时候会用到
-
-例如一个日志函数可能接受任意数量的信息：
-
-```python
-def log(*messages):
-    for message in messages:
-        print(message)
-```
-
-或者包装另一个函数时，不确定调用方会传多少参数。
-
-## 当前阶段记住
-
-```text
-*args = 多出来的位置参数
-函数内部 args 是 tuple
-```
-
-名字 `args` 只是惯例，真正关键的是前面的 `*`。
+`args` 只是惯用名称，也可以写成 `*numbers`、`*values`。真正起作用的是前面的 `*`。
