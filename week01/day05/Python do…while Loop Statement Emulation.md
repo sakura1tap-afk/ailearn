@@ -1,122 +1,65 @@
 # Python 中模拟 `do...while`
 
-Python **没有真正的 `do...while` 语法**。
+Python **没有**原生 `do...while` 语法。
 
-这个知识点真正想表达的只有一件事：
+`do...while` 的核心特点是：
 
-> 有些循环需要“先执行一次，再判断要不要继续”。
+> 循环体至少执行一次，然后再判断是否继续。
 
-## 1. 普通 `while` 是先判断
+Python 中通常用：
+
+```python
+while True:
+    # 先执行代码
+
+    if 结束条件:
+        break
+```
+
+来模拟。
+
+## 示例
+
+```python
+while True:
+    number = int(input("请输入一个正数："))
+
+    if number > 0:
+        break
+
+print("输入正确")
+```
+
+无论用户第一次输入什么，循环体都会先执行一次。
+
+## 为什么不用普通 `while`
+
+普通 `while` 会在进入循环前先判断条件：
 
 ```python
 while condition:
     ...
 ```
 
-执行顺序：
+如果一开始 `condition` 就是 `False`，循环一次都不会执行。
 
-```text
-先判断 condition
-↓
-True  → 执行循环体
-False → 一次都不执行
-```
-
-所以普通 `while` 可能一次都不运行。
-
-## 2. `do...while` 的思路是先执行
-
-很多其他语言里会有类似：
-
-```text
-do:
-    执行代码
-while 条件
-```
-
-意思是：
-
-```text
-先执行一次
-↓
-再判断
-↓
-决定要不要继续
-```
-
-## 3. Python 通常用 `while True + break` 模拟
+而：
 
 ```python
 while True:
-    user_input = input("输入 q 退出：")
-
-    if user_input == "q":
+    ...
+    if condition:
         break
 ```
 
-为什么它一定至少执行一次？
+一定会先进入循环，再决定什么时候退出。
 
-因为：
-
-```python
-while True:
-```
-
-第一次一定会进入循环。
-
-退出条件放在循环内部：
-
-```python
-if condition:
-    break
-```
-
-## 4. 典型使用场景
-
-例如菜单程序：
-
-```python
-while True:
-    print("1. 查询")
-    print("2. 添加")
-    print("q. 退出")
-
-    choice = input("请选择：")
-
-    if choice == "q":
-        break
-```
-
-菜单必须先展示一次，然后用户决定是否继续，这种场景就很适合。
-
-再比如猜数字：
-
-```python
-while True:
-    guess = int(input("请输入数字："))
-
-    if guess == 7:
-        print("猜对了")
-        break
-
-    print("再试一次")
-```
-
-## 5. 不要把它当成新的循环语法背
-
-Python 里并没有：
-
-```python
-do ... while
-```
-
-当前阶段只要知道：
+## 记忆
 
 ```text
-需要至少执行一次循环体
-→ while True
-→ 在循环内部判断
-→ 满足退出条件时 break
+Python 没有 do...while
+需要“至少执行一次”
+→ while True + break
 ```
 
-这本质上还是你已经学过的 `while` 和 `break`。
+这是一个实用的小技巧，理解即可，不需要当成新的循环语法死记。
