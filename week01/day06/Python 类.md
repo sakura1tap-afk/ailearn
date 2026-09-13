@@ -1,17 +1,87 @@
-## Objects
+# Python 类与对象
 
-对象是一个包含**数据**和**功能的**容器。
+类（class）可以理解成**创建对象的模板**，对象（object）是类创建出来的具体实例。
 
-**数据**代表了物体在特定时间点的表现。因此，对象的数据称为**状态**。Python 使用**属性**来建模对象的状态。
+```python
+class Person:
+    pass
 
-该功能表示对象的**行为**。Python 用[函数](https://www.pythontutorial.net/python-basics/python-functions/)来模拟这些行为。当函数与对象关联时，它成为对象的一个**方法**。
+p1 = Person()
+p2 = Person()
+```
 
-换句话说，对象是一个包含**状态**和**方法**的容器。
+这里：
 
-在创建对象之前，你首先定义一个类。在类中，你可以创建一个或多个对象。类的对象也称为类**的实例**。
+```text
+Person → 类
+p1/p2  → Person 的对象（实例）
+```
 
-## 摘要[](https://www.pythontutorial.net/python-oop/python-class/#summary "Anchor for Summary")
+## 对象里通常有什么
 
-- 对象是包含状态和行为的容器。
-- 类是创建对象的蓝图。
-- 在 Python 中，类也是一个对象，它是 的实例。`type`
+对象最核心的两部分：
+
+```text
+属性 attribute → 保存状态 / 数据
+方法 method    → 定义行为
+```
+
+例如：
+
+```python
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def greet(self):
+        return f"Hi, I'm {self.name}"
+
+person = Person("Tom", 18)
+
+print(person.name)
+print(person.greet())
+```
+
+## `self` 是什么
+
+当前阶段把 `self` 理解成：
+
+> 正在操作的这个对象本身。
+
+```python
+self.name = name
+```
+
+表示把传入的 `name` 保存到**当前对象**的 `name` 属性里。
+
+## `__init__`
+
+```python
+def __init__(self, ...):
+```
+
+在创建对象时自动调用，通常用于初始化实例属性。
+
+```python
+person = Person("Tom", 18)
+```
+
+会触发 `Person.__init__()`。
+
+## 和 Java 的联系
+
+你以前接触过 Java，所以可以先建立这个映射：
+
+```text
+class        → 类
+object       → 对象
+attribute    → 属性 / 字段
+method       → 方法
+__init__     → 初始化对象
+self         → 当前实例，作用上接近 Java 的 this
+```
+
+语法不同，但“用类描述一类对象”的核心思想是相通的。
+
+关联：[[Python 面向对象编程]]
