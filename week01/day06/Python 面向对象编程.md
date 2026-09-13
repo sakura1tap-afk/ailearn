@@ -1,249 +1,180 @@
-## 你将学到的东西[](https://www.pythontutorial.net/python-oop/#what-youll-learn "Anchor for What you'll learn")
+# Python 面向对象编程
 
-- 通过定义类和方法来创建 Python 中的对象。
-- 利用继承扩展类。
-- 面向对象编程中的SOLID原则。
-## Python 面向对象编程导论[](https://www.pythontutorial.net/python-oop/python-object-oriented-programming/#introduction-to-python-object-oriented-programming "Anchor for Introduction to Python Object-oriented Programming")
+面向对象编程（OOP, Object-Oriented Programming）不是 Python 独有概念。你以前在 Java 里接触过的类、对象、继承，在 Python 里仍然存在，只是语法更轻。
 
-Python 中的一切都是一个对象。一个对象有一个状态和行为。创建对象时，首先定义一个类。然后，你可以从类中创建一个或多个对象。这些对象是类的实例。
+当前阶段不需要一次吃完 OOP。先把主线抓住：
 
-## 定义一个类[](https://www.pythontutorial.net/python-oop/python-object-oriented-programming/#define-a-class "Anchor for Define a class")
+```text
+类 class
+→ 对象 object
+→ 实例属性
+→ 实例方法
+→ 继承 inheritance
+→ 方法重写 override
+```
 
-定义[类](https://www.pythontutorial.net/python-oop/python-class/)时，你用关键词跟类名。例如，以下定义了一个类：`class``Person`
+## 1. 类与对象
 
 ```python
 class Person:
     pass
-```
 
-要从类创建对象，使用类名和括号 ，就像调用函数一样：`Person``()`
-
-```python
 person = Person()
 ```
 
-在这个例子中，是该类的一个实例。课程[可以叫到](https://www.pythontutorial.net/python-built-in-functions/python-callable/)。`person``Person`
-
-## 定义实例属性[](https://www.pythontutorial.net/python-oop/python-object-oriented-programming/#define-instance-attributes "Anchor for Define instance attributes")
-
-Python 是动态的。这意味着你可以在运行时动态地为类的实例添加属性。
-
-例如，以下为对象添加属性：`name``person`
-
-```python
-person.name = 'John'
+```text
+Person → 类
+person → Person 的对象 / 实例
 ```
 
-但是，如果你创建另一个对象，新对象就不会有该属性。`Person``name`
+类是模板，对象是根据模板创建出来的具体实例。
 
-要定义并初始化所有类实例的属性，你使用该方法。以下定义了具有两个实例属性和的类：`[__init__](https://www.pythontutorial.net/python-oop/python-__init__/)``Person``name``age`
+## 2. 实例属性与 `__init__`
 
 ```python
 class Person:
     def __init__(self, name, age):
         self.name = name
         self.age = age
+
+person = Person("Tom", 18)
 ```
 
-当你创建对象时，Python 会自动调用该方法来初始化实例属性。在该方法中， 是类的实例。`Person``__init__``__init__``self``Person`
+这里：
 
-以下过程生成一个名为：`Person``person`
-
-```python
-person = Person('John', 25)
+```text
+name / age        → 创建对象时传入的数据
+self.name/self.age → 保存在当前对象里的属性
 ```
 
-对象现在拥有 和 属性。要访问实例属性，使用点符号。例如，以下返回对象名称属性的值：`person``name``age``person`
+`__init__()` 会在创建对象时自动调用。
 
-```python
-person.name
-```
-
-## 定义实例方法[](https://www.pythontutorial.net/python-oop/python-object-oriented-programming/#define-instance-methods "Anchor for Define instance methods")
-
-以下内容为该类添加了一个调用的实例方法：`greet()``Person`
+## 3. 实例方法
 
 ```python
 class Person:
-    def __init__(self, name, age):
+    def __init__(self, name):
         self.name = name
-        self.age = age
 
     def greet(self):
-        return f"Hi, it's {self.name}."
-```
+        return f"Hi, I'm {self.name}"
 
-调用实例方法时，你也使用点符号。例如：
-
-```python
-person = Person('John', 25)
+person = Person("Tom")
 print(person.greet())
 ```
 
-输出：
+方法本质上是和对象绑定的函数。
+
+## 4. `self`
+
+当前阶段把 `self` 理解成：
+
+> 当前正在操作的实例对象。
 
 ```python
-Hi, it's John
+self.name
 ```
 
-## 定义类属性[](https://www.pythontutorial.net/python-oop/python-object-oriented-programming/#define-class-attributes "Anchor for Define class attributes")
+表示“这个对象自己的 `name` 属性”。
 
-与实例属性不同，类属性是所有该类实例共享的。如果你想定义类常数或变量来记录类实例数，它们很有用。
+和 Java 中的 `this` 在作用上很接近。
 
-例如，以下定义了该类中的类属性：`counter``Person`
+## 5. 类属性
+
+实例属性属于各自对象：
 
 ```python
-class Person:
-    counter = 0
-
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-
-    def greet(self):
-        return f"Hi, it's {self.name}."
+self.name
 ```
 
-你可以从该类中访问属性：`counter``Person`
-
-```python
-Person.counter
-```
-
-或者从该类的任何实例中获得：`Person`
-
-```python
-person = Person('John',25)
-person.counter
-```
-
-为了让变量更有用，创建对象后可以将其值增加1。要做到这一点，你需要在该方法中增加类属性：`counter``counter``__init__`
+类属性由整个类共享：
 
 ```python
 class Person:
-    counter = 0
-
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-        Person.counter += 1
-
-    def greet(self):
-        return f"Hi, it's {self.name}."
+    species = "human"
 ```
 
-以下方法创建了两个该类的实例，并显示了 的值：`Person``counter`
+访问：
 
 ```python
-p1 = Person('John', 25)
-p2 = Person('Jane', 22)
-print(Person.counter)
+Person.species
 ```
 
-输出：
+当前知道两者有区别即可。
 
-```python
-2
-```
-
-## 定义类方法[](https://www.pythontutorial.net/python-oop/python-object-oriented-programming/#define-class-method "Anchor for Define class method")
-
-像类属性一样，类方法被该类的所有实例共享。类方法的第一个参数是类本身。按照惯例，其名称为 。Python 会自动将这个参数传递给类方法。另外，你用@classmethod装饰器来装饰一个班级的方法。`cls`
-
-以下示例定义了一个返回匿名对象的类方法：`Person`
+## 6. 继承
 
 ```python
 class Person:
-    counter = 0
-
-    def __init__(self, name, age):
+    def __init__(self, name):
         self.name = name
-        self.age = age
-        Person.counter += 1
 
     def greet(self):
-        return f"Hi, it's {self.name}."
+        return f"Hi, I'm {self.name}"
 
-    @classmethod
-    def create_anonymous(cls):
-        return Person('Anonymous', 22)
+
+class Employee(Person):
+    def __init__(self, name, job):
+        super().__init__(name)
+        self.job = job
 ```
 
-以下展示了如何调用类方法：`create_anonymous()`
+这里：
+
+```text
+Person   → 父类 / 基类
+Employee → 子类
+```
+
+`Employee` 可以复用 `Person` 已有的属性和方法。
+
+`super()` 用来调用父类实现：
 
 ```python
-anonymous = Person.create_anonymous()
-print(anonymous.name)  # Anonymous
+super().__init__(name)
 ```
 
-## 定义静态方法[](https://www.pythontutorial.net/python-oop/python-object-oriented-programming/#define-static-method "Anchor for Define static method")
+## 7. 方法重写
 
-静态方法不绑定于类或该类的任何实例。在 Python 中，你用静态方法将逻辑相关的函数分组到一个类中。要定义静态方法，你用装饰器。`@staticmethod`
-
-例如，以下定义了一个类，其有两个静态方法，分别将摄氏度转换为华氏度，反之亦然：`TemperatureConverter`
-
-```python
-class TemperatureConverter:
-    @staticmethod
-    def celsius_to_fahrenheit(c):
-        return 9 * c / 5 + 32
-
-    @staticmethod
-    def fahrenheit_to_celsius(f):
-        return 5 * (f - 32) / 9
-```
-
-调用静态方法时，你使用语法。例如：`ClassName.static_method_name()`
-
-```python
-f = TemperatureConverter.celsius_to_fahrenheit(30)
-print(f)  # 86
-```
-
-注意，Python 并不是隐式地传递实例（）和类（）作为静态方法的第一个参数。`self``cls`
-
-## 单一继承[](https://www.pythontutorial.net/python-oop/python-object-oriented-programming/#single-inheritance "Anchor for Single inheritance")
-
-类可以通过继承另一个类来重复使用。当子类继承父类时，子类可以访问父类的属性和方法。
-
-例如，你可以定义一个继承自该类的类：`Employee``Person`
+子类可以重新定义父类已有方法：
 
 ```python
 class Employee(Person):
-    def __init__(self, name, age, job_title):
-        super().__init__(name, age)
-        self.job_title = job_title
-```
-
-在类的方法内部调用了该类的方法来初始化和属性。允许子类访问父类的方法。`__init__``Employee``__init__``Person``name``age``super()`
-
-该类通过添加一个称为 的属性来扩展该类。`Employee``Person``job_title`
-
-是父类，而 是子类。要覆盖该类的方法，你可以定义该类的方法如下：`Person``Employee``greet()``Person``greet()``Employee`
-
-```python
-class Employee(Person):
-    def __init__(self, name, age, job_title):
-        super().__init__(name, age)
-        self.job_title = job_title
-
     def greet(self):
-        return super().greet() + f" I'm a {self.job_title}."
+        return f"我是员工 {self.name}"
 ```
 
-该 中的方法也称为类的方法。换句话说，它委派给父类的方法。`greet()``Employee``greet()``Person`
+这就是方法重写（override）。
 
-以下步骤创建该类的新实例并调用该方法：`Employee``greet()`
+## 8. classmethod 与 staticmethod
+
+教程里可能会继续出现：
 
 ```python
-employee = Employee('John', 25, 'Python Developer')
-print(employee.greet())
+@classmethod
+@staticmethod
 ```
 
-输出：
+现在只需要认识，不要求熟练。
 
-```python
-Hi, it's John. I'm a Python Developer.
+`@classmethod` 的第一个参数通常是 `cls`，表示类本身。
+
+`@staticmethod` 不自动接收 `self` 或 `cls`，更像“放在类里的普通工具函数”。
+
+等真正项目里遇到再深入。
+
+## 当前优先级
+
+```text
+★★★★★ class / object
+★★★★★ __init__ / self
+★★★★★ 实例属性 / 实例方法
+★★★★☆ 继承 / super()
+★★★☆☆ 方法重写
+★★☆☆☆ 类属性
+★☆☆☆☆ classmethod / staticmethod
 ```
 
-在本教程中，你已经简要了解了Python面向对象编程的知识。
+你有 Java 基础，概念可能看起来熟，但现在真正需要补的是 **Python 里的实际写法和工程使用经验**，而不是重新背一遍 OOP 定义。
+
+关联：[[Python 类]]
