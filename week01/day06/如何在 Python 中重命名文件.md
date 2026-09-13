@@ -1,50 +1,39 @@
-**总结**：在本教程中，你将学习如何使用模块函数在 Python 中重命名文件。`rename()``os`
+# Python 重命名文件
 
-要在 Python 中重命名文件，你使用模块中的函数。`rename()``os`
-
-以下是 rename（） 函数的基本语法：
-
-```lua
-os.rename(src, dst)
-```
-
-重命名函数会将 重新命名为 。`src``dst`
-
-如果文件不存在，函数会报错。同样，如果已经存在，函数也会报错。`src``rename()``FileNotFound``dst``rename()``FileExistsError`
-
-例如，以下操作使用函数将文件重命名为：`rename()``readme.txt``notes.txt`
-
-```lua
-import os
-
-os.rename('readme.txt', 'notes.txt')
-```
-
-为了避免错误，如果文件不存在和/或文件已经存在，你可以使用以下语句：`readme.txt``notes.txt``[try...except](https://www.pythontutorial.net/python-basics/python-try-except/)`
+使用 `os.rename()`：
 
 ```python
 import os
 
-try:
-    os.rename('readme.txt', 'notes.txt')
-except FileNotFoundError as e:
-    print(e)
-except FileExistsError as e:
-    print(e)
+os.rename("readme.txt", "notes.txt")
 ```
 
-以下显示文件不存在时的输出：`readme.txt`
-
-```abap
-[WinError 2] The system cannot find the file specified: 'readme.txt' -> 'notes.txt'
+```text
+src → 原路径
+dst → 新路径
 ```
 
-如果已经存在，以下图显示了输出：`notes.txt`
+原文件不存在时会抛出 `FileNotFoundError`。
 
-```sql
-[WinError 183] Cannot create a file when that file already exists: 'readme.txt' -> 'notes.txt'
+现代代码也常用 `pathlib`：
+
+```python
+from pathlib import Path
+
+Path("readme.txt").rename("notes.txt")
 ```
 
-## 摘要[](https://www.pythontutorial.net/python-basics/python-rename-file/#summary "Anchor for Summary")
+`rename()` 也可以把文件移动到另一个已存在的目录：
 
-- 使用该函数重命名文件。`os.rename()`
+```python
+Path("readme.txt").rename("docs/readme.txt")
+```
+
+## 当前重点
+
+```text
+os.rename(src, dst)
+Path(src).rename(dst)
+```
+
+真正需要注意的是确认原路径和目标路径，避免误移动文件。
