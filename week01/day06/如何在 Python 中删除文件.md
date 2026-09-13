@@ -1,40 +1,49 @@
-**总结**：在这个教程中，你将学习如何使用模块中的函数删除 Python 中的文件。`remove()``os`
+# Python 删除文件
 
-删除文件时，你需要使用内置模块的功能。例如，以下操作使用删除文件的函数：`` `remove()` ```os``os.remove()``readme.txt`
+删除文件最常见的两种写法：
 
-```python
-import os
-
-os.remove('readme.txt')
-```
-
-如果文件不存在，函数会发出错误：`readme.txt``os.remove()`
-
-```python
-FileNotFoundError: [WinError 2] The system cannot find the file specified: 'readme.txt'
-```
-
-为了避免错误，你可以在删除前[检查文件是否存在](https://www.pythontutorial.net/python-basics/python-check-if-file-exists/)，如下：
+## `os.remove()`
 
 ```python
 import os
 
-filename = 'readme.txt'
-if os.path.exists(filename):
-    os.remove(filename)
+os.remove("readme.txt")
 ```
 
-或者，如果文件不存在，你可以用该语句捕捉异常：`[try...except](https://www.pythontutorial.net/python-basics/python-try-except/)`
+文件不存在时会抛出 `FileNotFoundError`。
+
+可以配合异常处理：
 
 ```python
 import os
 
 try:
-    os.remove('readme.txt')
-except FileNotFoundError as e:
-    print(e)
+    os.remove("readme.txt")
+except FileNotFoundError:
+    print("文件不存在")
 ```
 
-## 摘要[#](https://www.pythontutorial.net/python-basics/python-delete-file/#summary "Anchor for Summary")
+## `pathlib.Path.unlink()`
 
-- 用操作系统。函数用来删除文件。`remove()`
+现代代码也常写：
+
+```python
+from pathlib import Path
+
+Path("readme.txt").unlink()
+```
+
+如果希望文件不存在时不报错：
+
+```python
+Path("readme.txt").unlink(missing_ok=True)
+```
+
+## 当前重点
+
+```text
+os.remove(path)   → 删除文件
+Path.unlink()     → 删除文件
+```
+
+删除属于破坏性操作。实际项目中执行批量删除前，先确认路径和筛选条件。
