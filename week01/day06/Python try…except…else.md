@@ -1,24 +1,67 @@
-## Introduction##  to the Python try…except…else statement
+# Python try...except...else
 
-该语句有一个可选子句，语法如下：`[try](https://www.pythontutorial.net/python-basics/python-try-except/)``else`
+`else` 可以跟在 `try...except` 后面，表示：
 
-```abap
+> `try` 中没有发生异常时，执行这里。
+
+```python
 try:
-    # code that may cause errors
-except:
-    # code that handle exceptions
+    num = int(input("输入数字："))
+except ValueError:
+    print("输入格式错误")
 else:
-    # code that executes when no exception occurs
+    print(f"你输入的是 {num}")
 ```
-该声明的运作方式如下：`try...except...else`
 
-- 如果子句中出现异常，Python 跳过子句中剩余的语句，并执行该语句。`try``try``except`
-- 如果该条款中没有例外，该条款将被执行。`try``else`
+执行逻辑：
 
-当你包含该条款时，该条款在该条款之后和之前执行。`[finally](https://www.pythontutorial.net/python-basics/python-try-except-finally/)``else``try``finally`
+```text
+try 成功
+→ 跳过 except
+→ 执行 else
 
-## 摘要[](https://www.pythontutorial.net/python-basics/python-try-except-else/#summary "Anchor for Summary")
+try 出现异常
+→ 执行对应 except
+→ 不执行 else
+```
 
-- 使用 Python 语句为你提供了一种在异常情况下控制程序流程的方法。`try...except...else`
-- 如果条款中没有例外，则该条款执行。`else``try`
-- 如果是这样，该条款在该条款之后和之前执行。`else``try``finally`
+## 为什么不把所有代码都塞进 try
+
+推荐只把“可能抛异常”的代码放进 `try`：
+
+```python
+try:
+    num = int(text)
+except ValueError:
+    print("转换失败")
+else:
+    result = num * 2
+    print(result)
+```
+
+这样异常处理范围更清楚，不会把本来不该捕获的问题一起包进去。
+
+## 和 finally 的关系
+
+完整结构可以是：
+
+```python
+try:
+    ...
+except SomeError:
+    ...
+else:
+    ...
+finally:
+    ...
+```
+
+其中：
+
+```text
+except  → 出异常时处理
+else    → 没异常时执行
+finally → 不管有没有异常，最后都执行
+```
+
+当前阶段重点掌握 `try + except`。`else` 和 `finally` 能看懂、知道什么时候用即可。
